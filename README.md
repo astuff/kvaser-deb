@@ -8,4 +8,4 @@ Prerequisites:
 - dkms
 - Kernel headers (linux-headers-generic on Ubuntu)
 
-''NOTE:'' The installer expects linuxcan to be at /usr/src/linuxcan.
+**NOTE:** The installer expects linuxcan to be at /usr/src/linuxcan.
