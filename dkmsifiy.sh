@@ -29,7 +29,7 @@ if [ ! -e "$PWD/mod-installscript.sh" ]; then
 fi
 
 # Get version of linuxcan
-VERSION=$(cat /usr/src/linuxcan/moduleinfo.txt | grep version | sed -e "s/version=//" -e "s/_/./g")
+VERSION=$(cat /usr/src/linuxcan/moduleinfo.txt | grep version | sed -e "s/version=//" -e "s/_/./g" -e "s/\r//g")
 
 # Copy necessary files
 echo "Copying files..."
