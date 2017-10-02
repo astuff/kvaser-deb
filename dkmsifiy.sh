@@ -46,21 +46,21 @@ cd /usr/src/linuxcan-$VERSION/
 
 echo "Editing install scripts and Makefiles to make compatible with module install..."
 for d in */; do
-    if [ -e "$d/installscript.sh" ] ; then
-        cd $d
+  if [ -e "$d/installscript.sh" ] ; then
+    cd $d
 
-        # Create new install scripts that don't install the modules directly
-        cat installscript.sh | sed -e "s/install -D -m 700 \$MODNAME.ko \/lib\/modules\/\`uname -r\`\/kernel\/drivers\/usb\/misc\/\$MODNAME.ko//" -e "s/install -D -m 700 \$MODNAME.ko \/lib\/modules\/\`uname -r\`\/kernel\/drivers\/usb\/misc//" -e "s/install -m 600 \$MODNAME.ko \/lib\/modules\/\`uname -r\`\/kernel\/drivers\/char\///" > mod-installscript.sh
-        chmod +x mod-installscript.sh
+    # Create new install scripts that don't install the modules directly
+    sudo cat installscript.sh | sed -e "/install -D -m 644 \$MODNAME.ko \/lib\/modules\/\`uname -r\`\/kernel\/drivers\/usb\/misc\/\$MODNAME.ko/,+3d" -e "/install -D -m 644 \$MODNAME.ko \/lib\/modules\/\`uname -r\`\/kernel\/drivers\/usb\/misc/,+3d" -e "/install -m 644 \$MODNAME.ko \/lib\/modules\/\`uname -r\`\/kernel\/drivers\/char\//,+3d" > mod-installscript.sh
+    chmod +x mod-installscript.sh
 
-        # Fix bug that keeps modules from building with KERNELRELEASE argument
-        if [ -e "Makefile" ] ; then
-            cat Makefile | sed '/^ifneq (\$(KERNELRELEASE),)$/ {N;N;N;N;s/ifneq (\$(KERNELRELEASE),)\n\tRUNDIR := \$(src)\nelse\n\tRUNDIR := \$(PWD)\nendif/RUNDIR := \$(PWD)/}' > Makefile-temp
-            mv Makefile-temp Makefile
-        fi
-
-        cd ..
+    # Fix bug that keeps modules from building with KERNELRELEASE argument
+    if [ -e "Makefile" ] ; then
+        cat Makefile | sed '/^ifneq (\$(KERNELRELEASE),)$/ {N;N;N;N;s/ifneq (\$(KERNELRELEASE),)\n\tRUNDIR := \$(src)\nelse\n\tRUNDIR := \$(PWD)\nendif/RUNDIR := \$(PWD)/}' > Makefile-temp
+        mv Makefile-temp Makefile
     fi
+
+    cd ..
+  fi
 done
 
 # Do the thing
