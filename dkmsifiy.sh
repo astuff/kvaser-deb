@@ -21,11 +21,18 @@ if [ ! -e "$PWD/mod-installscript.sh" ]; then
   exit -1
 fi
 
+# Delete existing linuxcan directory if it exists
+if [ -f "$PWD/linuxcan" ]; then
+  rm -r linuxcan/
+fi
+
 # Extraact linuxcan folder
-tar xvf linuxcan.tar.gz
+tar xf linuxcan.tar.gz
 
 # Get version of linuxcan
 VERSION=$(cat linuxcan/moduleinfo.txt | grep version | sed -e "s/version=//" -e "s/_/./g" -e "s/\r//g")
+
+INSTALL_DIR=/usr/src/linuxcan-$VERSION
 
 # Copy necessary files
 echo "Copying files..."
@@ -35,12 +42,9 @@ cp mod-installscript.sh linuxcan/
 # Modify dkms.conf with correct version
 sed -i "s/PACKAGE_VERSION=\"\"/PACKAGE_VERSION=\"$VERSION\"/" linuxcan/dkms.conf
 
-echo "Renaming linuxcan folder to linuxcan-$VERSION..."
-# Rename source folder to what DKMS expects
-mv linuxcan/ linuxcan-$VERSION/
-cd linuxcan-$VERSION/
-
 echo "Editing install scripts and Makefiles to make compatible with module install..."
+cd linuxcan/
+
 for d in */; do
   if [ -e "$d/installscript.sh" ] ; then
     cd $d
@@ -59,12 +63,14 @@ for d in */; do
   fi
 done
 
-echo "Moving linuxcan folder into /usr/src..."
-sudo mv linuxcan-$VERSION/ /usr/src
+cd ..
+
+echo "Moving linuxcan folder to /usr/src/linuxcan-$VERSION..."
+# Rename source folder to what DKMS expects
+sudo mv linuxcan $INSTALL_DIR
 
 # Do the thing
 echo "Building and installing DKMS module..."
-sudo dkms remove linuxcan/$VERSION --all
 sudo dkms add linuxcan/$VERSION
 sudo dkms build linuxcan/$VERSION
 sudo dkms install --force linuxcan/$VERSION
