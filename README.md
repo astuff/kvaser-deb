@@ -2,7 +2,7 @@
 
 h2. Installation instructions
 
-- If linuxcan is already installed:
+- If linuxcan is already installed (not as a DKMS module):
   - `$ cd /usr/src/linuxcan`
   - `$ sudo make uninstall`
 - Download and install:
@@ -10,6 +10,7 @@ h2. Installation instructions
   - `$ cd ~/Downloads`
   - `$ git clone https://github.com/JWhitleyAStuff/linuxcan-dkms`
   - `$ cd linuxcan-dkms`
+  - `wget https://www.kvaser.com/downloads-kvaser/?d_version_id=1193 (this is version 5.22.392)
   - `$ sudo ./dkmsify.sh`
 
 Prerequisites:
@@ -17,9 +18,6 @@ Prerequisites:
 - `sed`
 - `dkms`
 - Kernel headers (`linux-headers-generic` on Ubuntu)
-
-**NOTE:** The installer expects linuxcan to be at /usr/src/linuxcan.
-
 
 h2. Reinstallation instructions
 
