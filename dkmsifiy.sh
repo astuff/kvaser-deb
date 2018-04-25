@@ -5,13 +5,6 @@ PWD=$(pwd)
 # Exit if any command fails
 set -e
 
-# Check for root user
-if [[ "$EUID" -ne 0 ]] ;
-then
-  echo "This script must be run as root (sudo) user. Exiting..." 1>&2
-  exit -1
-fi
-
 # Check for required files/folders
 if [ ! -e "$PWD/linuxcan.tar.gz" ]; then
   echo "linuxcan.tar.gz must be placed in this folder. Exiting..." 1>&2
@@ -71,10 +64,10 @@ sudo mv linuxcan-$VERSION/ /usr/src
 
 # Do the thing
 echo "Building and installing DKMS module..."
-dkms remove linuxcan/$VERSION --all
-dkms add linuxcan/$VERSION
-dkms build linuxcan/$VERSION
-dkms install --force linuxcan/$VERSION
+sudo dkms remove linuxcan/$VERSION --all
+sudo dkms add linuxcan/$VERSION
+sudo dkms build linuxcan/$VERSION
+sudo dkms install --force linuxcan/$VERSION
 echo "Done!"
 
 exit
