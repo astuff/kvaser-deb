@@ -10,7 +10,7 @@ h2. Installation instructions
   - `$ cd ~/Downloads`
   - `$ git clone https://github.com/JWhitleyAStuff/linuxcan-dkms`
   - `$ cd linuxcan-dkms`
-  - `wget https://www.kvaser.com/downloads-kvaser/?d_version_id=1193 (this is version 5.22.392)
+  - `wget https://www.kvaser.com/downloads-kvaser/?d_version_id=1193 -O linuxcan.tar.gz (this is version 5.22.392)
   - `$ sudo ./dkmsify.sh`
 
 Prerequisites:
