@@ -26,7 +26,7 @@ if [ -f "$PWD/linuxcan" ]; then
   rm -r linuxcan/
 fi
 
-# Extraact linuxcan folder
+# Extract linuxcan folder
 tar xf linuxcan.tar.gz
 
 # Get version of linuxcan
