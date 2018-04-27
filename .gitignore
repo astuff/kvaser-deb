@@ -1,7 +1,9 @@
 build/
 bin/
 lib/
+linuxcan/
 *.log
 *.swp
 *.user
 *~
+*.tar.gz
