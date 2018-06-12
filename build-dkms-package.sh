@@ -113,7 +113,6 @@ sudo mv linuxcan $INSTALL_DIR
 echo ""
 echo "Building DKMS source module..."
 sudo dkms add linuxcan/$VERSION
-sudo dkms build linuxcan/$VERSION
 sudo dkms mkdsc linuxcan/$VERSION --source-only
 
 mkdir dsc
