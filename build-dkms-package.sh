@@ -7,32 +7,40 @@ set -e
 
 # Check for required files/folders
 if [ ! -e "$PWD/linuxcan.tar.gz" ]; then
+  echo ""
   echo "linuxcan.tar.gz must be placed in this folder. Exiting..." 1>&2
   exit -1
 fi
 
 if [ ! -e "$PWD/dkms.conf" ]; then
+  echo ""
   echo "dkms.conf not found in this directory. Exiting..." 1>&2
   exit -1
 fi
 
 if [ ! -e "$PWD/mod-installscript.sh" ]; then
+  echo ""
   echo "mod-installscript.sh not found in this directory. Exiting..." 1>&2
   exit -1
 fi
 
 if [ ! -e "$PWD/linuxcan-dkms-mkdsc" ]; then
+  echo ""
   echo "linuxcan-dkms-mkdsc directory not found. Exiting..." 1>&2
   exit -1
 fi
 
-# Delete existing linuxcan directory if it exists
-if [ -f "$PWD/linuxcan" ]; then
+# Delete existing directories if they exist
+if [ -d "$PWD/linuxcan" ]; then
   rm -r linuxcan/
+  echo ""
+  echo "linuxcan directory deleted"
 fi
 
-if [ -f "$PWD/dsc" ]; then
+if [ -d "$PWD/dsc" ]; then
   rm -r dsc/
+  echo ""
+  echo "dsc directory deleted"
 fi
 
 # Extract linuxcan folder
@@ -44,12 +52,21 @@ OS_VER=$(lsb_release -cs)
 
 INSTALL_DIR=/usr/src/linuxcan-$VERSION
 
-# Check for existing source directory and remove if found
-if [ -f "/usr/src/linuxcan-${VERSION}" ]; then
+# Delete version-specific folders
+if [ -d "/usr/src/linuxcan-${VERSION}" ]; then
   sudo rm -r /usr/src/linuxcan-${VERSION}
+  echo ""
+  echo "linuxcan-${VERSION} directory deleted"
+fi
+
+if [ -d "/var/lib/dkms/linuxcan/${VERSION}" ]; then
+  sudo rm -r /var/lib/dkms/linuxcan/${VERSION}
+  echo ""
+  echo "linuxcan/${VERSION} dkms directory deleted"
 fi
 
 # Copy necessary files
+echo ""
 echo "Copying files..."
 cp dkms.conf linuxcan/
 cp mod-installscript.sh linuxcan/
@@ -57,6 +74,7 @@ cp mod-installscript.sh linuxcan/
 # Modify dkms.conf with correct version
 sed -i "s/PACKAGE_VERSION=\"\"/PACKAGE_VERSION=\"$VERSION\"/" linuxcan/dkms.conf
 
+echo ""
 echo "Editing install scripts and Makefiles to make compatible with module install..."
 cd linuxcan/
 
@@ -85,11 +103,14 @@ sed -i "s/stable/${OS_VER}/" linuxcan-dkms-mkdsc/debian/changelog
 
 cd ..
 
+echo ""
 echo "Moving linuxcan folder to /usr/src/linuxcan-$VERSION..."
+
 # Rename source folder to what DKMS expects
 sudo mv linuxcan $INSTALL_DIR
 
 # Do the thing
+echo ""
 echo "Building DKMS source module..."
 sudo dkms add linuxcan/$VERSION
 sudo dkms build linuxcan/$VERSION
@@ -100,6 +121,7 @@ cp -R /var/lib/dkms/linuxcan/$VERSION/dsc/* dsc/
 cd dsc
 debsign -k"Joshua Whitley <jwhitley@autonomoustuff.com>" linuxcan-dkms_${VERSION}_source.changes
 dput ppa:jwhitleyastuff/linuxcan-dkms linuxcan-dkms_${VERSION}_source.changes
+echo ""
 echo "Done!"
 
 exit
