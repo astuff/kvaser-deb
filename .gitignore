@@ -2,6 +2,7 @@ build/
 bin/
 lib/
 linuxcan/
+dsc/
 *.log
 *.swp
 *.user

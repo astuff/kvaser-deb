@@ -21,9 +21,18 @@ if [ ! -e "$PWD/mod-installscript.sh" ]; then
   exit -1
 fi
 
+if [ ! -e "$PWD/linuxcan-dkms-mkdsc" ]; then
+  echo "linuxcan-dkms-mkdsc directory not found. Exiting..." 1>&2
+  exit -1
+fi
+
 # Delete existing linuxcan directory if it exists
 if [ -f "$PWD/linuxcan" ]; then
   rm -r linuxcan/
+fi
+
+if [ -f "$PWD/dsc" ]; then
+  rm -r dsc/
 fi
 
 # Extract linuxcan folder
@@ -33,6 +42,11 @@ tar xf linuxcan.tar.gz
 VERSION=$(cat linuxcan/moduleinfo.txt | grep version | sed -e "s/version=//" -e "s/_/./g" -e "s/\r//g")
 
 INSTALL_DIR=/usr/src/linuxcan-$VERSION
+
+# Check for existing source directory and remove if found
+if [ -f "/usr/src/linuxcan-${VERSION}" ]; then
+  sudo rm -r /usr/src/linuxcan-${VERSION}
+fi
 
 # Copy necessary files
 echo "Copying files..."
@@ -63,6 +77,8 @@ for d in */; do
   fi
 done
 
+cp -r ../linuxcan-dkms-mkdsc .
+
 cd ..
 
 echo "Moving linuxcan folder to /usr/src/linuxcan-$VERSION..."
@@ -70,11 +86,17 @@ echo "Moving linuxcan folder to /usr/src/linuxcan-$VERSION..."
 sudo mv linuxcan $INSTALL_DIR
 
 # Do the thing
-echo "Building and installing DKMS module..."
+echo "Building DKMS source module..."
 sudo dkms add linuxcan/$VERSION
 sudo dkms build linuxcan/$VERSION
 sudo dkms mkdsc linuxcan/$VERSION --source-only
-sudo dkms mkdeb linuxcan/$VERSION --source-only
+
+cd $PWD
+mkdir dsc
+cp -R /var/lib/dkms/linuxcan/$VERSION/dsc/* dsc/
+cd dsc
+debsign -k"Joshua Whitley <jwhitley@autonomoustuff.com>" linuxcan-dkms_${VERSION}_source.changes
+dput ppa:jwhitleyastuff/linuxcan-dkms linuxcan-dkms_${VERSION}_source.changes
 echo "Done!"
 
 exit

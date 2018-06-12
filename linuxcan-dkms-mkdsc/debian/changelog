@@ -1,0 +1,6 @@
+DEBIAN_PACKAGE-dkms (MODULE_VERSION) xenial; urgency=low
+
+  * Automatically packaged by DKMS.
+
+ -- Joshua Whitley <jwhitley@autonomoustuff.com>  DATE_STAMP
+
