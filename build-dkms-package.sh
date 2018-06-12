@@ -83,7 +83,7 @@ cp -r ../linuxcan-dkms-mkdsc .
 # Modify debian/changelog with correct OS version
 sed -i "s/stable/${OS_VER}/" linuxcan-dkms-mkdsc/debian/changelog
 
-cd $PWD
+cd ..
 
 echo "Moving linuxcan folder to /usr/src/linuxcan-$VERSION..."
 # Rename source folder to what DKMS expects
