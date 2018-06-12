@@ -1,4 +1,4 @@
-DEBIAN_PACKAGE-dkms (MODULE_VERSION) xenial; urgency=low
+DEBIAN_PACKAGE-dkms (MODULE_VERSION) stable; urgency=low
 
   * Automatically packaged by DKMS.
 

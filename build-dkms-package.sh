@@ -40,6 +40,7 @@ tar xf linuxcan.tar.gz
 
 # Get version of linuxcan
 VERSION=$(cat linuxcan/moduleinfo.txt | grep version | sed -e "s/version=//" -e "s/_/./g" -e "s/\r//g")
+OS_VER=$(lsb_release -cs)
 
 INSTALL_DIR=/usr/src/linuxcan-$VERSION
 
@@ -79,7 +80,10 @@ done
 
 cp -r ../linuxcan-dkms-mkdsc .
 
-cd ..
+# Modify debian/changelog with correct OS version
+sed -i "s/stable/${OS_VER}/" linuxcan-dkms-mkdsc/debian/changelog
+
+cd $PWD
 
 echo "Moving linuxcan folder to /usr/src/linuxcan-$VERSION..."
 # Rename source folder to what DKMS expects
@@ -91,7 +95,6 @@ sudo dkms add linuxcan/$VERSION
 sudo dkms build linuxcan/$VERSION
 sudo dkms mkdsc linuxcan/$VERSION --source-only
 
-cd $PWD
 mkdir dsc
 cp -R /var/lib/dkms/linuxcan/$VERSION/dsc/* dsc/
 cd dsc
