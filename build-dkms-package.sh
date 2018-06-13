@@ -115,10 +115,20 @@ echo "Building DKMS source module..."
 sudo dkms add linuxcan/$VERSION
 sudo dkms mkdsc linuxcan/$VERSION --source-only
 
+# Proper DKMS Package Instructions: http://chrisarges.net/2013/09/05/building-proper-debian-source-package.html
 mkdir dsc
 cp -R /var/lib/dkms/linuxcan/$VERSION/dsc/* dsc/
 cd dsc
-debsign -k"Joshua Whitley <jwhitley@autonomoustuff.com>" linuxcan-dkms_${VERSION}_source.changes
+
+# Fix the package
+dpkg-source -x linuxcan-dkms_${VERSION}.dsc
+cd linuxcan-dkms-${VERSION}
+chmod -x debian/co* debian/dirs debian/ch*
+cd linuxcan-${VERSION}
+debuild -S
+cd ../..
+
+# Upload
 dput ppa:jwhitleyastuff/linuxcan-dkms linuxcan-dkms_${VERSION}_source.changes
 echo ""
 echo "Done!"
