@@ -78,6 +78,7 @@ echo ""
 echo "Editing install scripts and Makefiles to make compatible with module install..."
 cd linuxcan/
 
+# Modify installation scripts and makefiles
 for d in */; do
   if [ -e "$d/installscript.sh" ] ; then
     cd $d
@@ -86,10 +87,11 @@ for d in */; do
     sudo cat installscript.sh | sed -e "/install -D -m 644 \$MODNAME.ko \/lib\/modules\/\`uname -r\`\/kernel\/drivers\/usb\/misc\/\$MODNAME.ko/,+3d" -e "/install -D -m 644 \$MODNAME.ko \/lib\/modules\/\`uname -r\`\/kernel\/drivers\/usb\/misc/,+3d" -e "/install -m 644 \$MODNAME.ko \/lib\/modules\/\`uname -r\`\/kernel\/drivers\/char\//,+3d" > mod-installscript.sh
     chmod +x mod-installscript.sh
 
-    # Fix bug that keeps modules from building with KERNELRELEASE argument
     if [ -e "Makefile" ] ; then
-        cat Makefile | sed '/^ifneq (\$(KERNELRELEASE),)$/ {N;N;N;N;s/ifneq (\$(KERNELRELEASE),)\n\tRUNDIR := \$(src)\nelse\n\tRUNDIR := \$(PWD)\nendif/RUNDIR := \$(PWD)/}' > Makefile-temp
-        mv Makefile-temp Makefile
+      # Fix bug that keeps modules from building with KERNELRELEASE argument
+      sed -i '/^ifneq (\$(KERNELRELEASE),)$/ {N;N;N;N;s/ifneq (\$(KERNELRELEASE),)\n\tRUNDIR := \$(src)\nelse\n\tRUNDIR := \$(PWD)\nendif/RUNDIR := \$(PWD)/}' Makefile
+      # Fix bug that keeps linlib from building in Makefile (gets built in post-install script anyway)
+      sed -i 's/USERLIBS  += linlib/#USERLIBS  += linlib/g' Makefile
     fi
 
     cd ..
