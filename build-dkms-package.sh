@@ -131,7 +131,7 @@ debuild -S
 cd ../..
 
 # Upload
-dput ppa:jwhitleyastuff/kvaser-linuxcan-dkms linuxcan-dkms_${VERSION}_source.changes
+dput ppa:jwhitleyastuff/linuxcan-dkms linuxcan-dkms_${VERSION}_source.changes
 echo ""
 echo "Done!"
 
