@@ -114,7 +114,7 @@ sed -i "s/stable/${OS_VER}/" linuxcan-dkms-mkdsc/debian/changelog
 cd ..
 
 echo ""
-echo "Moving linuxcan folder to /usr/src/linuxcan-$VERSION..."
+echo "Moving linuxcan folder to $INSTALL_DIR..."
 
 # Rename source folder to what DKMS expects
 sudo mv linuxcan $INSTALL_DIR
@@ -132,8 +132,9 @@ cp -R /var/lib/dkms/linuxcan/$VERSION/dsc/* dsc/
 cd dsc
 
 # Unpack the dsc
-dpkg-source -x linuxcan-dkms_${VERSION}.dsc
-cd linuxcan-dkms-${VERSION}
+dpkg-source -x linuxcan-dkms_$VERSION.dsc
+mv linuxcan-dkms-$VERSION linuxcan-dkms-$DEBIAN_VERSION
+cd linuxcan-dkms-$DEBIAN_VERSION
 
 # Fix permissions
 chmod -x debian/co* debian/dirs debian/ch*
