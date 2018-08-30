@@ -146,8 +146,8 @@ sed -i "s/$VERSION/$DEBIAN_VERSION/g" debian/changelog
 sed -i "s/$VERSION/$DEBIAN_VERSION/g" debian/rules
 echo 9 > debian/compat
 
-mv linuxcan-${VERSION} src
-cd src
+mv linuxcan-${VERSION} linuxcan-${DEBIAN_VERSION}
+cd linuxcan-${DEBIAN_VERSION}
 debuild -S
 cd ../..
 
