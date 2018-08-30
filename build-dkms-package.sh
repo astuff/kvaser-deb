@@ -124,6 +124,11 @@ echo ""
 echo "Building DKMS source module..."
 echo ""
 sudo dkms add linuxcan/$VERSION
+
+echo ""
+echo "Modifying dkms.conf and building dsc..."
+echo ""
+sudo sed -i "s/$VERSION/$DEBIAN_VERSION/g" $INSTALL_DIR/dkms.conf
 sudo dkms mkdsc linuxcan/$VERSION --source-only
 
 # Proper DKMS Package Instructions: http://chrisarges.net/2013/09/05/building-proper-debian-source-package.html
@@ -145,6 +150,7 @@ echo "Editing auto-generated package..."
 echo ""
 sed -i "s/$VERSION/$DEBIAN_VERSION/g" debian/changelog
 sed -i "s/$VERSION/$DEBIAN_VERSION/g" debian/rules
+sed -i "s/$VERSION/$DEBIAN_VERSION/g" debian/prerm
 echo 9 > debian/compat
 
 mv linuxcan-${VERSION} linuxcan-${DEBIAN_VERSION}
