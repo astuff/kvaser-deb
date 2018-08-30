@@ -48,10 +48,12 @@ tar xf linuxcan.tar.gz
 
 # Get version of linuxcan
 VERSION=$(cat linuxcan/moduleinfo.txt | grep version | sed -e "s/version=//" -e "s/_/./g" -e "s/\r//g")
-DEBIAN_VERSION=${VERSION}-0ubuntu1~ppa0
+DEBIAN_VERSION=${VERSION}-0ubuntu1~ppa
 
 if [ $# -gt 0 ]; then
   DEBIAN_VERSION=${DEBIAN_VERSION}$1
+else
+  DEBIAN_VERSION=${DEBIAN_VERSION}0
 fi
 
 OS_VER=$(lsb_release -cs)
@@ -142,7 +144,7 @@ echo "Editing auto-generated package..."
 echo ""
 sed -i "s/$VERSION/$DEBIAN_VERSION/g" debian/changelog
 sed -i "s/$VERSION/$DEBIAN_VERSION/g" debian/rules
-echo 10 > debian/compat
+echo 9 > debian/compat
 
 mv linuxcan-${VERSION} src
 cd src
