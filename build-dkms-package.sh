@@ -48,6 +48,12 @@ tar xf linuxcan.tar.gz
 
 # Get version of linuxcan
 VERSION=$(cat linuxcan/moduleinfo.txt | grep version | sed -e "s/version=//" -e "s/_/./g" -e "s/\r//g")
+DEBIAN_VERSION=${VERSION}-0ubuntu1~ppa0
+
+if [ $# -gt 0 ]; then
+  DEBIAN_VERSION=${DEBIAN_VERSION}$1
+fi
+
 OS_VER=$(lsb_release -cs)
 
 INSTALL_DIR=/usr/src/linuxcan-$VERSION
@@ -100,7 +106,7 @@ done
 
 cp -r ../linuxcan-dkms-mkdsc .
 
-# Modify debian/changelog with correct OS version
+# Modify debian/changelog with correct OS and package versions
 sed -i "s/stable/${OS_VER}/" linuxcan-dkms-mkdsc/debian/changelog
 
 cd ..
@@ -114,6 +120,7 @@ sudo mv linuxcan $INSTALL_DIR
 # Do the thing
 echo ""
 echo "Building DKMS source module..."
+echo ""
 sudo dkms add linuxcan/$VERSION
 sudo dkms mkdsc linuxcan/$VERSION --source-only
 
@@ -122,16 +129,28 @@ mkdir dsc
 cp -R /var/lib/dkms/linuxcan/$VERSION/dsc/* dsc/
 cd dsc
 
-# Fix the package
+# Unpack the dsc
 dpkg-source -x linuxcan-dkms_${VERSION}.dsc
 cd linuxcan-dkms-${VERSION}
+
+# Fix permissions
 chmod -x debian/co* debian/dirs debian/ch*
-cd linuxcan-${VERSION}
+
+# Edit the package version
+echo ""
+echo "Editing auto-generated package..."
+echo ""
+sed -i "s/$VERSION/$DEBIAN_VERSION/g" debian/changelog
+sed -i "s/$VERSION/$DEBIAN_VERSION/g" debian/rules
+echo 10 > debian/compat
+
+mv linuxcan-${VERSION} src
+cd src
 debuild -S
 cd ../..
 
 # Upload
-dput ppa:jwhitleyastuff/linuxcan-dkms linuxcan-dkms_${VERSION}_source.changes
+dput ppa:jwhitleyastuff/linuxcan-dkms linuxcan-dkms_${DEBIAN_VERSION}_source.changes
 echo ""
 echo "Done!"
 
