@@ -86,6 +86,9 @@ echo ""
 echo "Editing install scripts and Makefiles to make compatible with module install..."
 cd linuxcan/
 
+# Fix bug that keeps linlib from building in Makefile (gets built in post-install script anyway)
+sed -i 's/USERLIBS  += linlib/#USERLIBS  += linlib/g' Makefile
+
 # Modify installation scripts and makefiles
 for d in */; do
   if [ -e "$d/installscript.sh" ] ; then
@@ -98,8 +101,6 @@ for d in */; do
     if [ -e "Makefile" ] ; then
       # Fix bug that keeps modules from building with KERNELRELEASE argument
       sed -i '/^ifneq (\$(KERNELRELEASE),)$/ {N;N;N;N;s/ifneq (\$(KERNELRELEASE),)\n\tRUNDIR := \$(src)\nelse\n\tRUNDIR := \$(PWD)\nendif/RUNDIR := \$(PWD)/}' Makefile
-      # Fix bug that keeps linlib from building in Makefile (gets built in post-install script anyway)
-      sed -i 's/USERLIBS  += linlib/#USERLIBS  += linlib/g' Makefile
     fi
 
     cd ..
