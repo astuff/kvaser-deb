@@ -1,6 +1,21 @@
 DEBIAN_PACKAGE-dkms (MODULE_VERSION) stable; urgency=low
 
-  * Automatically packaged by DKMS.
+  * Blacklisting SocketCAN kvaser_pciefd driver when installing pcican, pcican2 and pciefd drivers.
+  * The installation script will create any missing folders in /lib/modules/`uname -r`/kernel/drivers prior to installation.
+  * Added compiled script file (.txe) information retrieval function kvScriptTxeGetData.
+  * SDK (canlib)
+    - The clock will now be resetted at buson.  To disable this behaviour, call canIoCtl (canIOCTL_SET_BUSON_TIME_AUTO_RESET, 0) before going onbus.
+    - Implemented canNOTIFY_BUSONOFF.
+  * SDK (kvlclib)
+    - Added Vector MDF .log input format.
+    - Added API to access information about reader formats.
+    - Added option KVLC_PROPERTY_FULLY_QUALIFIED_NAMES to enable use of fully qualified signal names when converting log files to output format "selected signals in CSV format".
+    - Added number of data decimals property for csv-format. Default value is 4.
+  * SDK (kvmlib)
+    - Fixed a bug where kvmLogFileReadEvent() returned kvmERR_FILE_ERROR and not kvmEOF after the last event.
+  * SDK (kvadblib)
+    - Added GetDatabaseName to kvadblibCLSNET.
+    - Added function to delete attribute definitions, kvaDbDeleteAttributeDefinition.
 
  -- Joshua Whitley <jwhitley@autonomoustuff.com>  DATE_STAMP
 
