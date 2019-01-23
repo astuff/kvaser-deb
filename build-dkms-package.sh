@@ -5,6 +5,11 @@ PWD=$(pwd)
 # Exit if any command fails
 set -e
 
+echo ""
+echo "Remember to modify the changelog in linuxcan-dkms-mkdsc/debian to include the current release notes."
+echo "If you need to modify it now, hit CTRL+C. Otherwise hit enter to continue."
+read STUFF
+
 # Check for required files/folders
 if [ ! -e "$PWD/linuxcan.tar.gz" ]; then
   echo ""

@@ -1,21 +1,21 @@
 DEBIAN_PACKAGE-dkms (MODULE_VERSION) stable; urgency=low
 
-  * Blacklisting SocketCAN kvaser_pciefd driver when installing pcican, pcican2 and pciefd drivers.
-  * The installation script will create any missing folders in /lib/modules/`uname -r`/kernel/drivers prior to installation.
-  * Added compiled script file (.txe) information retrieval function kvScriptTxeGetData.
+  * Updated the README and "General infromation" in this document. Since linuxcan
+    version V5.12 the minimum Linux kernel version required is 2.6.28. For pciefd
+    driver 2.6.29 is required.
+  * Fixed bug with corrupt serial numbers in PCIcan driver.
+  * Fixed build problems for GCC 8 and old GCC (4.3 and 4.6).
   * SDK (canlib)
-    - The clock will now be resetted at buson.  To disable this behaviour, call canIoCtl (canIOCTL_SET_BUSON_TIME_AUTO_RESET, 0) before going onbus.
-    - Implemented canNOTIFY_BUSONOFF.
-  * SDK (kvlclib)
-    - Added Vector MDF .log input format.
-    - Added API to access information about reader formats.
-    - Added option KVLC_PROPERTY_FULLY_QUALIFIED_NAMES to enable use of fully qualified signal names when converting log files to output format "selected signals in CSV format".
-    - Added number of data decimals property for csv-format. Default value is 4.
-  * SDK (kvmlib)
-    - Fixed a bug where kvmLogFileReadEvent() returned kvmERR_FILE_ERROR and not kvmEOF after the last event.
+    - Fixed a bug where handles became invalid for a short while when
+      connecting 2 or more usb-devices that used the same driver.
+    - listChannels example reports firmware version on same format as in Windows.
   * SDK (kvadblib)
-    - Added GetDatabaseName to kvadblibCLSNET.
-    - Added function to delete attribute definitions, kvaDbDeleteAttributeDefinition.
+    - Fixed a bug where kvaDbGetFlags() didn't return the KVADB_DATABASE_J1939-flag.
+    - Added function kvaDbGetMsgByPGN().
+    - Clarified null-terminated strings in documentation.
+  * SDK (linlib)
+    - Clarified LIN diagnostic frames in documentation.
+    - linWriteWakeup() parameter check updated.
 
  -- Joshua Whitley <jwhitley@autonomoustuff.com>  DATE_STAMP
 
