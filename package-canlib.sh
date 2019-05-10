@@ -61,6 +61,7 @@ cp -r canlib-debian/ kvaser-canlib/debian/
 sed -i "s/unstable/${OS_VER}/" kvaser-canlib/debian/changelog
 sed -i "s/MODULE_VERSION/${DEBIAN_VERSION}/" kvaser-canlib/debian/changelog
 sed -i "s/DATE_STAMP/$(LC_ALL=C date -R)/" kvaser-canlib/debian/changelog
+sed -i "s/DATE_STAMP/$(LC_ALL=C date -R)/" kvaser-canlib/debian/README.Debian
 
 # Build the package
 cd kvaser-canlib
