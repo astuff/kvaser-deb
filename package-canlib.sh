@@ -7,8 +7,8 @@ PWD=$(pwd)
 OS_VER=$(lsb_release -cs)
 
 echo ""
-echo "Remember to modify the changelog in linuxcan-dkms-mkdsc/debian to include the current release notes."
-echo "If you need to modify it now, hit CTRL+C. Otherwise hit enter to continue."
+echo "Remember to modify the changelog in canlib-debian to include the current release notes."
+echo "If you need to modify it now, hit [CTRL+C]. Otherwise hit [ENTER] to continue."
 read STUFF
 
 # Check for required files/folders
@@ -65,3 +65,8 @@ sed -i "s/DATE_STAMP/$(LC_ALL=C date -R)/" kvaser-canlib/debian/changelog
 # Build the package
 cd kvaser-canlib
 debuild -S
+
+# Upload
+dput ppa:jwhitleyastuff/kvaser-linuxcan kvaser-canlib-dev_${DEBIAN_VERSION}_source.changes
+echo ""
+echo "Done!"
