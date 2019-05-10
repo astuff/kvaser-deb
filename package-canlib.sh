@@ -25,29 +25,23 @@ if [ ! -e "$PWD/linuxcan-dkms-mkdsc" ]; then
 fi
 
 # Delete existing directories if they exist
-if [ -d "$PWD/canlib" ]; then
-  rm -r canlib/
+if [ -d "$PWD/kvaser-canlib" ]; then
+  rm -r kvaser-canlib/
   echo ""
-  echo "canlib directory deleted"
-fi
-
-if [ -d "$PWD/canlib-dsc" ]; then
-  rm -r canlib-dsc/
-  echo ""
-  echo "canlib-dsc directory deleted"
+  echo "kvaser-canlib directory deleted"
 fi
 
 # Extract linuxcan folder
 tar xf linuxcan.tar.gz
 
-mv linuxcan/ canlib/
+mv linuxcan/ kvaser-canlib/
 
 # Get version of linuxcan
-VERSION=$(cat canlib/moduleinfo.txt | grep version | sed -e "s/version=//" -e "s/_/./g" -e "s/\r//g")
+VERSION=$(cat kvaser-canlib/moduleinfo.txt | grep version | sed -e "s/version=//" -e "s/_/./g" -e "s/\r//g")
 DEBIAN_VERSION=${VERSION}-0ubuntu0~ppa
 
 # Strip down to only canlib
-cd canlib/
+cd kvaser-canlib/
 rm 10-kvaser.rules
 rm -r leaf/ linlib/ mhydra/ pcican/ pcican2/ pciefd/ usbcanII/ virtualcan/ 
 cp ../Makefile-canlib Makefile
@@ -58,7 +52,16 @@ else
   DEBIAN_VERSION=${DEBIAN_VERSION}0
 fi
 
-cp -r ../canlib-debian ./debian
+# Make source tarball
+cd ..
+tar zcf kvaser-canlib-dev_${VERSION}.orig.tar.gz kvaser-canlib/
 
-# Modify debian/changelog with correct OS and package versions
-sed -i "s/stable/${OS_VER}/" debian/changelog
+# Modify debian files with correct OS and package versions
+cp -r canlib-debian/ kvaser-canlib/debian/
+sed -i "s/unstable/${OS_VER}/" kvaser-canlib/debian/changelog
+sed -i "s/MODULE_VERSION/${DEBIAN_VERSION}/" kvaser-canlib/debian/changelog
+sed -i "s/DATE_STAMP/$(LC_ALL=C date -R)/" kvaser-canlib/debian/changelog
+
+# Build the package
+cd kvaser-canlib
+debuild -S

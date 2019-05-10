@@ -1,0 +1,16 @@
+Source: kvaser-canlib-dev
+Section: libdevel
+Priority: optional
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Joshua Whitley <jwhitley@autonomoustuff.com>
+Build-Depends: debhelper (>= 10)
+Standards-Version: 4.1.2
+Homepage: https://www.kvaser.com/linux-drivers-and-sdk/
+#Vcs-Git: https://anonscm.debian.org/git/collab-maint/canlib.git
+#Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/canlib.git
+
+Package: kvaser-canlib-dev
+Architecture: any
+Multi-Arch: same
+Depends: ${misc:Depends}
+Description: Kvaser canlib headers and shared object libraries.

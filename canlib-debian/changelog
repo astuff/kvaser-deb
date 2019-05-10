@@ -1,0 +1,10 @@
+kvaser-canlib-dev (MODULE_VERSION) unstable; urgency=medium
+
+  * The CAN controller driver type is set to canDRIVER_NORMAL when opening
+    a new CAN handle.
+  * Retrieving canCHANNELDATA_TRANS_TYPE using canGetChannelData() returns
+    canTRANSCEIVER_TYPE_UNKNOWN for Virtual channels.
+  * Retrieving canCHANNELDATA_CARD_NUMBER using canGetChannelData() returns
+    the same card number for CAN channels located on the same physical device.
+
+ -- Joshua Whitley <jwhitley@autonomoustuff.com>  DATE_STAMP
