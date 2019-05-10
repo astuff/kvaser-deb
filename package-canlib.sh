@@ -68,6 +68,6 @@ cd kvaser-canlib
 debuild -S
 
 # Upload
-dput ppa:jwhitleyastuff/kvaser-linuxcan kvaser-canlib-dev_${DEBIAN_VERSION}_source.changes
+#dput ppa:jwhitleyastuff/kvaser-linuxcan kvaser-canlib-dev_${DEBIAN_VERSION}_source.changes
 echo ""
 echo "Done!"

@@ -3,7 +3,7 @@ Section: libdevel
 Priority: optional
 Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
 XSBC-Original-Maintainer: Joshua Whitley <jwhitley@autonomoustuff.com>
-Build-Depends: debhelper (>= 10)
+Build-Depends: debhelper (>= 10), libc6-dev
 Standards-Version: 4.1.2
 Homepage: https://www.kvaser.com/linux-drivers-and-sdk/
 #Vcs-Git: https://anonscm.debian.org/git/collab-maint/canlib.git
@@ -12,5 +12,5 @@ Homepage: https://www.kvaser.com/linux-drivers-and-sdk/
 Package: kvaser-canlib-dev
 Architecture: any
 Multi-Arch: same
-Depends: ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Kvaser canlib headers and shared object libraries.
