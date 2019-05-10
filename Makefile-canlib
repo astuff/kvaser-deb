@@ -63,12 +63,6 @@
 
 # Main Makefile for the Kvaser linuxcan.
 
-#----------------------------------------
-# included in build
-#----------------------------------------
-USERLIBS  += canlib
-USERLIBS  += linlib
-
 #---------------------------------
 # Debug levels are defined in config.mak
 KV_DEBUG_ON ?= 0
@@ -87,9 +81,9 @@ endef
 
 #---------------------------------------------------------------------------
 # RULES
-.PHONY: print_versions_start canlib linlib install uninstall clean check load
+.PHONY: print_versions_start canlib install uninstall clean check load
 
-all: print_versions_start $(USERLIBS)
+all: print_versions_start canlib
 	@echo
 	@$(call print_versions, Done)
 
@@ -99,26 +93,20 @@ print_versions_start:
 canlib:
 	$(MAKE) -C canlib examples
 
-linlib:
-	$(MAKE) -C linlib
-
 install:
 	$(MAKE) -C canlib install
-	$(MAKE) -C linlib install
 
 uninstall:
 	$(MAKE) -C canlib uninstall
-	$(MAKE) -C linlib uninstall
 
 load:
 	$(MAKE) -C canlib install
-	$(MAKE) -C linlib install
 
 check:
 	$(MAKE) -C canlib check
 
 clean:
-	@for dir in $(USERLIBS) ; do cd $$dir; $(MAKE) clean; cd ..; done
+	cd canlib; $(make) clean; cd ..;
 	rm -f modules.order Module.symvers
 	rm -rf .tmp_versions
 	find . -name "checklog.txt"|xargs rm -f
