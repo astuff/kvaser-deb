@@ -151,9 +151,9 @@ debuild -S
 cd ../..
 
 # Upload
-#echo ""
-#echo "Uploading..."
-#dput ppa:jwhitleyastuff/linuxcan-dkms linuxcan-dkms_${DEBIAN_VERSION}_source.changes
-#echo "Done!"
+echo ""
+echo "Uploading..."
+dput ppa:jwhitleyastuff/linuxcan-dkms linuxcan-dkms_${DEBIAN_VERSION}_source.changes
+echo "Done!"
 
 exit
