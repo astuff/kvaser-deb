@@ -17,39 +17,35 @@ if [ ! -e "$PWD/linuxcan.tar.gz" ]; then
   exit -1
 fi
 
-if [ ! -e "$PWD/dkms.conf" ]; then
+if [ ! -e "$PWD/dkms/dkms.conf" ]; then
   echo ""
-  echo "dkms.conf not found in this directory. Exiting..." 1>&2
+  echo "dkms.conf not found in dkms directory. Exiting..." 1>&2
   exit -1
 fi
 
-if [ ! -e "$PWD/mod-installscript.sh" ]; then
+if [ ! -e "$PWD/dkms/mod-installscript.sh" ]; then
   echo ""
-  echo "mod-installscript.sh not found in this directory. Exiting..." 1>&2
+  echo "mod-installscript.sh not found in dkms directory. Exiting..." 1>&2
   exit -1
 fi
 
-if [ ! -e "$PWD/linuxcan-dkms-mkdsc" ]; then
+if [ ! -e "$PWD/dkms/linuxcan-dkms-mkdsc" ]; then
   echo ""
-  echo "linuxcan-dkms-mkdsc directory not found. Exiting..." 1>&2
+  echo "linuxcan-dkms-mkdsc directory not found in dkms directory. Exiting..." 1>&2
   exit -1
 fi
 
+# Delete the BUILD/ directory if it exists
 # Delete existing directories if they exist
-if [ -d "$PWD/linuxcan" ]; then
-  rm -r linuxcan/
-  echo ""
-  echo "linuxcan directory deleted"
+if [ -d "$PWD/BUILD" ]; then
+  rm -r BUILD/
 fi
 
-if [ -d "$PWD/dsc" ]; then
-  rm -r dsc/
-  echo ""
-  echo "dsc directory deleted"
-fi
+mkdir BUILD
+cd BUILD/
 
 # Extract linuxcan folder
-tar xf linuxcan.tar.gz
+tar xf ../linuxcan.tar.gz
 
 # Get version of linuxcan
 VERSION=$(cat linuxcan/moduleinfo.txt | grep version | sed -e "s/version=//" -e "s/_/./g" -e "s/\r//g")
@@ -81,8 +77,8 @@ fi
 # Copy necessary files
 echo ""
 echo "Copying files..."
-cp dkms.conf linuxcan/
-cp mod-installscript.sh linuxcan/
+cp ../dkms/dkms.conf linuxcan/
+cp ../dkms/mod-installscript.sh linuxcan/
 
 # Modify dkms.conf with correct version
 sed -i "s/PACKAGE_VERSION=\"\"/PACKAGE_VERSION=\"$VERSION\"/" linuxcan/dkms.conf
@@ -112,7 +108,7 @@ for d in */; do
   fi
 done
 
-cp -r ../linuxcan-dkms-mkdsc .
+cp -r ../../dkms/linuxcan-dkms-mkdsc .
 
 # Modify debian/changelog with correct OS and package versions
 sed -i "s/stable/${OS_VER}/" linuxcan-dkms-mkdsc/debian/changelog
@@ -147,7 +143,6 @@ chmod -x debian/co* debian/dirs debian/ch*
 # Edit the package version
 echo ""
 echo "Editing auto-generated package..."
-echo ""
 sed -i "s/$VERSION/$DEBIAN_VERSION/g" debian/changelog
 echo 9 > debian/compat
 
@@ -156,8 +151,9 @@ debuild -S
 cd ../..
 
 # Upload
-dput ppa:jwhitleyastuff/linuxcan-dkms linuxcan-dkms_${DEBIAN_VERSION}_source.changes
-echo ""
-echo "Done!"
+#echo ""
+#echo "Uploading..."
+#dput ppa:jwhitleyastuff/linuxcan-dkms linuxcan-dkms_${DEBIAN_VERSION}_source.changes
+#echo "Done!"
 
 exit

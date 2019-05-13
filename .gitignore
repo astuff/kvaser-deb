@@ -1,8 +1,5 @@
 build/
-bin/
-lib/
-linuxcan/
-dsc/
+BUILD/
 *.log
 *.swp
 *.user
