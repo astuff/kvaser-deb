@@ -3,10 +3,11 @@ Section: misc
 Priority: optional
 Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
 XSBC-Original-Maintainer: Joshua Whitley <jwhitley@autonomoustuff.com>
-Build-Depends: debhelper (>= 9), dkms
-Standards-Version: 3.9.7
+Build-Depends: debhelper (>= 10), dkms
+Standards-Version: 4.1.2
+Homepage: https://www.kvaser.com/linux-drivers-and-sdk/
 
 Package: DEBIAN_PACKAGE-dkms
 Architecture: amd64
 Depends: dkms (>= 1.95), ${misc:Depends}
-Description: DEBIAN_PACKAGE driver in DKMS format.
+Description: DEBIAN_PACKAGE in DKMS format.
