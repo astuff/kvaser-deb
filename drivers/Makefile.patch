@@ -1,0 +1,67 @@
+--- ../linuxcan/Makefile	2019-03-03 13:55:53.000000000 -0600
++++ Makefile	2019-05-13 17:03:36.606644875 -0500
+@@ -66,9 +66,6 @@
+ #----------------------------------------
+ # included in build
+ #----------------------------------------
+-USERLIBS  += canlib
+-USERLIBS  += linlib
+-
+ DRIVERS   += common
+ DRIVERS   += leaf
+ DRIVERS   += mhydra
+@@ -87,7 +84,7 @@
+ export KV_DEBUG_ON
+ 
+ #---------------------------------
+-SUBDIRS   = $(USERLIBS) $(DRIVERS)
++SUBDIRS   = $(DRIVERS)
+ 
+ reverse=$(if $(1),$(call reverse,$(wordlist 2,$(words $(1)),$(1)))) $(firstword $(1))
+ 
+@@ -104,7 +101,7 @@
+ 
+ #---------------------------------------------------------------------------
+ # RULES
+-.PHONY: print_versions_start canlib linlib common leaf mhydra pcican pcican2 usbcanII virtualcan pciefd install uninstall clean check load
++.PHONY: print_versions_start common leaf mhydra pcican pcican2 usbcanII virtualcan pciefd install uninstall clean check load
+ 
+ all: print_versions_start $(SUBDIRS)
+ 	@echo
+@@ -117,12 +114,6 @@
+ 	@$(call check_for_kvaser_usb_devices)
+ 	@$(call check_for_secure_boot)
+ 
+-canlib:
+-	$(MAKE) -C canlib examples
+-
+-linlib:
+-	$(MAKE) -C linlib
+-
+ common:
+ 	@cd ./common; $(MAKE) kv_module
+ 
+@@ -149,23 +140,16 @@
+ 
+ install:
+ 	@for dir in $(DRIVERS) ; do cd $$dir; echo Installing $$dir;./installscript.sh || exit 1; cd ..; done
+-	$(MAKE) -C canlib install
+-	$(MAKE) -C linlib install
+ 
+ uninstall:
+ 	@for dir in $(call reverse,$(DRIVERS)) ; do cd $$dir; echo Uninstalling $$dir;./uninstallscript.sh || exit 1; cd ..; done
+-	$(MAKE) -C canlib uninstall
+-	$(MAKE) -C linlib uninstall
+ 	rm -f /etc/udev/rules.d/10-kvaser.rules
+ 	rm -f /etc/modules-load.d/kvaser.conf
+ 
+ load:
+ 	@for dir in $(DRIVERS) ; do cd $$dir; echo Installing $$dir;./installscript.sh load || exit 1; cd ..; done
+-	$(MAKE) -C canlib install
+-	$(MAKE) -C linlib install
+ 
+ check:
+-	$(MAKE) -C canlib check
+ 	@for dir in $(DRIVERS) ; do cd $$dir; $(MAKE) check; cd ..; done
+ 
+ clean:

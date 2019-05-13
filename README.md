@@ -11,7 +11,7 @@
   - `$ ./package-linlib.sh`
   - `$ ./package-drivers.sh`
 
-The order of the above commands **does matter** as the dependencies trickle down. `drivers` depends on `linlib` and `canlib`, `linlib` depends on `canlib`.
+The order of the above commands **does matter** as `linlib` depends on `canlib`.
 
 ## Prerequisites
 
