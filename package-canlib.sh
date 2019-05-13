@@ -18,21 +18,28 @@ if [ ! -e "$PWD/linuxcan.tar.gz" ]; then
   exit -1
 fi
 
-if [ ! -e "$PWD/linuxcan-dkms-mkdsc" ]; then
+if [ ! -e "$PWD/canlib/canlib-debian" ]; then
   echo ""
-  echo "linuxcan-dkms-mkdsc directory not found. Exiting..." 1>&2
+  echo "canlib-debian directory not found in canlib folder. Exiting..." 1>&2
   exit -1
 fi
 
-# Delete existing directories if they exist
-if [ -d "$PWD/kvaser-canlib" ]; then
-  rm -r kvaser-canlib/
+if [ ! -e "$PWD/canlib/Makefile-canlib" ]; then
   echo ""
-  echo "kvaser-canlib directory deleted"
+  echo "Makefile-canlib not found in canlib folder. Exiting..." 1>&2
+  exit -1
 fi
 
+# Delete BUILD directory if it exists
+if [ -d "$PWD/BUILD" ]; then
+  rm -r BUILD/
+fi
+
+mkdir BUILD
+cd BUILD/
+
 # Extract linuxcan folder
-tar xf linuxcan.tar.gz
+tar xf ../linuxcan.tar.gz
 
 mv linuxcan/ kvaser-canlib/
 
@@ -50,7 +57,7 @@ fi
 cd kvaser-canlib/
 rm 10-kvaser.rules
 rm -r leaf/ linlib/ mhydra/ pcican/ pcican2/ pciefd/ usbcanII/ virtualcan/ 
-cp ../Makefile-canlib Makefile
+cp ../../canlib/Makefile-canlib Makefile
 
 # Modify Makefiles for DEB install
 sed -i "1s/^/prefix = \/usr\n/" canlib/Makefile
@@ -73,7 +80,7 @@ sed -i "s/rm \(.*\)\/usr/rm \1\$(DESTDIR)\$(prefix)/g" canlib/examples/Makefile
 tar cfJ ../kvaser-canlib-dev_${VERSION}.orig.tar.xz .
 
 # Modify debian files with correct OS and package versions
-cp -r ../canlib-debian/ debian/
+cp -r ../../canlib/canlib-debian/ debian/
 sed -i "s/unstable/${OS_VER}/" debian/changelog
 sed -i "s/MODULE_VERSION/${DEBIAN_VERSION}/" debian/changelog
 sed -i "s/DATE_STAMP/$(LC_ALL=C date -R)/" debian/changelog
@@ -84,9 +91,9 @@ debuild -S -sa
 cd ..
 
 # Upload
-dput ppa:jwhitleyastuff/kvaser-linux kvaser-canlib-dev_${DEBIAN_VERSION}_source.changes
 echo ""
-echo "Uploaded."
+echo "Uploading..."
+dput ppa:jwhitleyastuff/kvaser-linux kvaser-canlib-dev_${DEBIAN_VERSION}_source.changes
 
 # Clean-up
 rm -r kvaser-canlib*
