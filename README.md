@@ -1,27 +1,29 @@
-# DKMS Installer for Kvaser Linuxcan #
+# Debian Package Generation Scripts for Kvaser Linux Drivers and SDK
 
-h2. Installation instructions
+## Usage
 
-- If linuxcan is already installed (not as a DKMS module):
-  - `$ cd /usr/src/linuxcan`
-  - `$ sudo make uninstall`
-- Download and install:
-  - `$ sudo apt-get install dkms`
-  - `$ cd ~/Downloads`
-  - `$ git clone https://github.com/JWhitleyAStuff/linuxcan-dkms`
-  - `$ cd linuxcan-dkms`
-  - `wget https://www.kvaser.com/downloads-kvaser/?d_version_id=1193 -O linuxcan.tar.gz` (this is version 5.22.392)
-  - `$ ./dkmsify.sh`
-  - You will be asked for your `sudo` password during the script
+- Download the Linuxcan (Kvaser Linux) Drivers and SDK from https://kvaser.com/download/
+- Place the linuxcan.tar.gz file in the root of this repo
+- For uploading to PPA jwhitleyastuff/linuxcan-dkms (one DKMS package for all of linuxcan):
+  - `$ ./package-dkms.sh`
+- For uploading to PPA jwhitleyastuff/kvaser-linux (separate packages for canlib, linlib, and drivers):
+  - `$ ./package-canlib.sh`
+  - `$ ./package-linlib.sh`
+  - `$ ./package-drivers.sh`
 
-Prerequisites:
+The order of the above commands **does matter** as the dependencies trickle down. Drivers depends on linlib and canlib, linlib depends on canlib.
+
+## Prerequisites
 
 - `sed`
 - `dkms`
 - Kernel headers (`linux-headers-generic` on Ubuntu)
 
-h2. Reinstallation instructions
+## Installation of the generated packages
 
-- If linuxcan was previously installed but is currently unable to detect connected hardware, it's required to rebuild the kernel modules:
-  - `$ sudo dkms remove linuxcan/<digit-version-here> -k $(uname -r)`
-  - `$ sudo dkms install linuxcan/<digit-version-here>`
+- `jwhitleyastuff/linuxcan-dkms`:
+  - `$ sudo apt-add-repository ppa:jwhitleyastuff/linuxcan-dkms`
+  - `$ sudo apt install linuxcan-dkms`
+- `jwhitleyastuff/kvaser-linux`:
+  - `$ sudo apt-add-repository ppa:jwhitleyastuff/kvaser-linux`
+  - `$ sudo apt install kvaser-canlib-dev kvaser-linlib-dev kvaser-drivers-dkms`
