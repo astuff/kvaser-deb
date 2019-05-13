@@ -1,0 +1,7 @@
+Files: *
+Copyright: 2017 Kvaser AB, Molndal, Sweden
+License: GPL-2+ or BSD
+
+Files: debian/*
+Copyright: 2019 Joshua Whitley
+License: GPL-2+

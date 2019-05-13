@@ -1,0 +1,13 @@
+DEBIAN_PACKAGE-dkms (MODULE_VERSION) stable; urgency=low
+
+  * Added support for new device:
+    - Kvaser Memorator Light HS v2 (01058-1)
+  * Fixed build problems for kernel v5.0.0.
+  * Possible to force 32-bit DMA addresses for pciefd, by setting the define
+    KV_PCIEFD_DMA_32BIT to '1', like this 'KV_PCIEFD_DMA_32BIT=1 make' This can be
+    useful when connecting PCIEcan via PCI-to-PCIe bridge.
+  * Added warning when building on host with Secure Boot enabled.
+  * Updated doc/faq.
+
+ -- Joshua Whitley <jwhitley@autonomoustuff.com>  DATE_STAMP
+
