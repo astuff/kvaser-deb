@@ -3,15 +3,15 @@
 ## Usage
 
 - Download the Linuxcan (Kvaser Linux) Drivers and SDK from https://kvaser.com/download/
-- Place the linuxcan.tar.gz file in the root of this repo
+- Place the `linuxcan.tar.gz` file in the root of this repo
 - For uploading to PPA jwhitleyastuff/linuxcan-dkms (one DKMS package for all of linuxcan):
   - `$ ./package-dkms.sh`
-- For uploading to PPA jwhitleyastuff/kvaser-linux (separate packages for canlib, linlib, and drivers):
+- For uploading to PPA jwhitleyastuff/kvaser-linux (separate packages for `canlib`, `linlib`, and `drivers`):
   - `$ ./package-canlib.sh`
   - `$ ./package-linlib.sh`
   - `$ ./package-drivers.sh`
 
-The order of the above commands **does matter** as the dependencies trickle down. Drivers depends on linlib and canlib, linlib depends on canlib.
+The order of the above commands **does matter** as the dependencies trickle down. `drivers` depends on `linlib` and `canlib`, `linlib` depends on `canlib`.
 
 ## Prerequisites
 
