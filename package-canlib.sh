@@ -7,7 +7,7 @@ PWD=$(pwd)
 OS_VER=$(lsb_release -cs)
 
 echo ""
-echo "Remember to modify the changelog in canlib-debian to include the current release notes."
+echo "Remember to modify the changelog in debian-canlib to include the current release notes."
 echo "If you need to modify it now, hit [CTRL+C]. Otherwise hit [ENTER] to continue."
 read STUFF
 
@@ -18,9 +18,9 @@ if [ ! -e "$PWD/linuxcan.tar.gz" ]; then
   exit -1
 fi
 
-if [ ! -e "$PWD/canlib/canlib-debian" ]; then
+if [ ! -e "$PWD/canlib/debian-canlib" ]; then
   echo ""
-  echo "canlib-debian directory not found in canlib folder. Exiting..." 1>&2
+  echo "debian-canlib directory not found in canlib folder. Exiting..." 1>&2
   exit -1
 fi
 
@@ -80,7 +80,7 @@ sed -i "s/rm \(.*\)\/usr/rm \1\$(DESTDIR)\$(prefix)/g" canlib/examples/Makefile
 tar cfJ ../kvaser-canlib-dev_${VERSION}.orig.tar.xz .
 
 # Modify debian files with correct OS and package versions
-cp -r ../../canlib/canlib-debian/ debian/
+cp -r ../../canlib/debian-canlib/ debian/
 sed -i "s/unstable/${OS_VER}/" debian/changelog
 sed -i "s/MODULE_VERSION/${DEBIAN_VERSION}/" debian/changelog
 sed -i "s/DATE_STAMP/$(LC_ALL=C date -R)/" debian/changelog
@@ -94,7 +94,4 @@ cd ..
 echo ""
 echo "Uploading..."
 dput ppa:jwhitleyastuff/kvaser-linux kvaser-canlib-dev_${DEBIAN_VERSION}_source.changes
-
-# Clean-up
-rm -r kvaser-canlib*
 echo "Done!"

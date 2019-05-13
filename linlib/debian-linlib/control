@@ -1,0 +1,16 @@
+Source: kvaser-linlib-dev
+Section: libdevel
+Priority: optional
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Joshua Whitley <jwhitley@autonomoustuff.com>
+Build-Depends: debhelper (>= 10), kvaser-canlib-dev
+Standards-Version: 4.1.2
+Homepage: https://www.kvaser.com/linux-drivers-and-sdk/
+#Vcs-Git: https://anonscm.debian.org/git/collab-maint/linlib.git
+#Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/linlib.git
+
+Package: kvaser-linlib-dev
+Architecture: any
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Kvaser linlib headers and shared object libraries.
