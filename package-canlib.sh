@@ -69,8 +69,8 @@ sed -i "s/mkdir \(.*\)\/usr/mkdir \1\$(DESTDIR)\$(prefix)/g" canlib/examples/Mak
 sed -i "s/cp \(.*\)\/usr/cp \1\$(DESTDIR)\$(prefix)/g" canlib/examples/Makefile
 sed -i "s/rm \(.*\)\/usr/rm \1\$(DESTDIR)\$(prefix)/g" canlib/examples/Makefile
 
-# Make source tarball
-tar zcf ../kvaser-canlib-dev_${VERSION}.orig.tar.gz ../kvaser-canlib/
+# Create original tarball
+tar cfJ ../kvaser-canlib-dev_${VERSION}.orig.tar.xz .
 
 # Modify debian files with correct OS and package versions
 cp -r ../canlib-debian/ debian/
@@ -80,10 +80,14 @@ sed -i "s/DATE_STAMP/$(LC_ALL=C date -R)/" debian/changelog
 sed -i "s/DATE_STAMP/$(LC_ALL=C date -R)/" debian/README.Debian
 
 # Build the package
-debuild -S
+debuild -S -sa
 cd ..
 
 # Upload
-dput ppa:jwhitleyastuff/kvaser-linuxcan kvaser-canlib-dev_${DEBIAN_VERSION}_source.changes
+dput ppa:jwhitleyastuff/kvaser-linux kvaser-canlib-dev_${DEBIAN_VERSION}_source.changes
 echo ""
+echo "Uploaded."
+
+# Clean-up
+rm -r kvaser-canlib*
 echo "Done!"

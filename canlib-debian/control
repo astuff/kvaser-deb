@@ -3,7 +3,7 @@ Section: libdevel
 Priority: optional
 Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
 XSBC-Original-Maintainer: Joshua Whitley <jwhitley@autonomoustuff.com>
-Build-Depends: debhelper (>= 10), libc6-dev
+Build-Depends: debhelper (>= 10), cppcheck
 Standards-Version: 4.1.2
 Homepage: https://www.kvaser.com/linux-drivers-and-sdk/
 #Vcs-Git: https://anonscm.debian.org/git/collab-maint/canlib.git
