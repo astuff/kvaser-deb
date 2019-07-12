@@ -1,19 +1,6 @@
 DEBIAN_PACKAGE-dkms (MODULE_VERSION) stable; urgency=low
 
-  * The CAN controller driver type is set to canDRIVER_NORMAL when opening
-    a new CAN handle.
-  * Retrieving canCHANNELDATA_TRANS_TYPE using canGetChannelData() returns
-    canTRANSCEIVER_TYPE_UNKNOWN for Virtual channels.
-  * Retrieving canCHANNELDATA_CARD_NUMBER using canGetChannelData() returns
-    the same card number for CAN channels located on the same physical device.
-  * Added support for new device:
-    - Kvaser Memorator Light HS v2 (01058-1)
-  * Fixed build problems for kernel v5.0.0.
-  * Possible to force 32-bit DMA addresses for pciefd, by setting the define
-    KV_PCIEFD_DMA_32BIT to '1', like this 'KV_PCIEFD_DMA_32BIT=1 make' This can be
-    useful when connecting PCIEcan via PCI-to-PCIe bridge.
-  * Added warning when building on host with Secure Boot enabled.
-  * Updated doc/faq.
+  * Minor changes.
 
  -- Joshua Whitley <jwhitley@autonomoustuff.com>  DATE_STAMP
 

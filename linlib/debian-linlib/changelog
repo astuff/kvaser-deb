@@ -1,7 +1,5 @@
 kvaser-linlib-dev (MODULE_VERSION) unstable; urgency=medium
 
-  * Fixed build problems for kernel v5.0.0.
-  * Added warning when building on host with Secure Boot enabled.
-  * Updated doc/faq.
+  * Minor changes.
 
  -- Joshua Whitley <jwhitley@autonomoustuff.com>  DATE_STAMP
