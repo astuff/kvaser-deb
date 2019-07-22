@@ -11,12 +11,6 @@ echo "If you need to modify it now, hit CTRL+C. Otherwise hit enter to continue.
 read STUFF
 
 # Check for required files/folders
-if [ ! -e "$PWD/linuxcan.tar.gz" ]; then
-  echo ""
-  echo "linuxcan.tar.gz must be placed in this folder. Exiting..." 1>&2
-  exit -1
-fi
-
 if [ ! -e "$PWD/drivers/dkms.conf" ]; then
   echo ""
   echo "dkms.conf not found in drivers directory. Exiting..." 1>&2
@@ -44,8 +38,8 @@ fi
 mkdir BUILD
 cd BUILD/
 
-# Extract linuxcan folder
-tar xf ../linuxcan.tar.gz
+# Clone linuxcan folder
+git clone https://github.com/astuff/kvaser-linuxcan linuxcan
 
 # Get version of linuxcan
 VERSION=$(cat linuxcan/moduleinfo.txt | grep version | sed -e "s/version=//" -e "s/_/./g" -e "s/\r//g")

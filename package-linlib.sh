@@ -12,12 +12,6 @@ echo "If you need to modify it now, hit [CTRL+C]. Otherwise hit [ENTER] to conti
 read STUFF
 
 # Check for required files/folders
-if [ ! -e "$PWD/linuxcan.tar.gz" ]; then
-  echo ""
-  echo "linuxcan.tar.gz must be placed in this folder. Exiting..." 1>&2
-  exit -1
-fi
-
 if [ ! -e "$PWD/linlib/debian-linlib" ]; then
   echo ""
   echo "debian-linlib directory not found in linlib folder. Exiting..." 1>&2
@@ -38,10 +32,10 @@ fi
 mkdir BUILD
 cd BUILD/
 
-# Extract linuxcan folder
-tar xf ../linuxcan.tar.gz
+# Clone linuxcan folder
+git clone https://github.com/astuff/kvaser-linuxcan
 
-mv linuxcan/ kvaser-linlib/
+mv kvaser-linuxcan/ kvaser-linlib/
 
 # Get version of linuxcan
 VERSION=$(cat kvaser-linlib/moduleinfo.txt | grep version | sed -e "s/version=//" -e "s/_/./g" -e "s/\r//g")
