@@ -1,5 +1,5 @@
---- ../linuxcan/Makefile	2019-03-03 13:55:53.000000000 -0600
-+++ Makefile	2019-05-13 17:03:36.606644875 -0500
+--- ../linuxcan/Makefile
++++ Makefile
 @@ -66,9 +66,6 @@
  #----------------------------------------
  # included in build
@@ -10,7 +10,7 @@
  DRIVERS   += common
  DRIVERS   += leaf
  DRIVERS   += mhydra
-@@ -87,7 +84,7 @@
+@@ -87,7 +84,7 @@ KV_DEBUG_ON ?= 0
  export KV_DEBUG_ON
  
  #---------------------------------
@@ -19,7 +19,7 @@
  
  reverse=$(if $(1),$(call reverse,$(wordlist 2,$(words $(1)),$(1)))) $(firstword $(1))
  
-@@ -104,7 +101,7 @@
+@@ -104,7 +101,7 @@ endef
  
  #---------------------------------------------------------------------------
  # RULES
@@ -28,20 +28,20 @@
  
  all: print_versions_start $(SUBDIRS)
  	@echo
-@@ -117,12 +114,6 @@
+@@ -117,12 +114,6 @@ print_versions_start:
  	@$(call check_for_kvaser_usb_devices)
  	@$(call check_for_secure_boot)
  
 -canlib:
 -	$(MAKE) -C canlib examples
 -
--linlib:
+-linlib: canlib
 -	$(MAKE) -C linlib
 -
  common:
  	@cd ./common; $(MAKE) kv_module
  
-@@ -149,23 +140,16 @@
+@@ -149,23 +140,16 @@ pciefd: common
  
  install:
  	@for dir in $(DRIVERS) ; do cd $$dir; echo Installing $$dir;./installscript.sh || exit 1; cd ..; done

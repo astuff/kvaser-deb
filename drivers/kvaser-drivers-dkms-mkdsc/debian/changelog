@@ -1,6 +1,14 @@
 DEBIAN_PACKAGE-dkms (MODULE_VERSION) stable; urgency=low
 
-  * Minor changes.
+  * Common
+    - fixed bug where a call to canIOCTL_TX_INTERVAL could cause a crash if 
+      TX_INTERVAL is unsupported by the device.
+    - BusStatistics increments between calls to canGetBusStatistics. Previously,
+      it was cleared. The function now has the same behavior as in Windows.
+
+  * PCIEcan
+    - Implemented canGetBusStatistics for reading the busload value.
+    - BusStatistics now separates correctly on standard and extended id frames.
 
  -- Joshua Whitley <jwhitley@autonomoustuff.com>  DATE_STAMP
 
