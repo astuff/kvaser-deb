@@ -6,6 +6,14 @@ PWD=$(pwd)
 set -e
 
 echo ""
+echo "                                                           ====WARNING===="
+echo "The linuxcan-dkms package and repo should be considered obsolte and users should use the jwhitleyastuff/kvaser-linux repo instead."
+echo "If you absolutely have to build a version for release on this repo, remove this message and the following line from the bash script."
+echo "                                                           ====WARNING===="
+echo ""
+exit -1
+
+echo ""
 echo "Remember to modify the changelog in linuxcan-dkms-mkdsc/debian to include the current release notes."
 echo "If you need to modify it now, hit CTRL+C. Otherwise hit enter to continue."
 read STUFF
