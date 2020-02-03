@@ -2,7 +2,7 @@ Source: DEBIAN_PACKAGE-dkms
 Section: misc
 Priority: optional
 Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
-XSBC-Original-Maintainer: Joshua Whitley <jwhitley@autonomoustuff.com>
+XSBC-Original-Maintainer: AutonomouStuff <software@autonomoustuff.com>
 Build-Depends: debhelper (>= 9), dkms
 Standards-Version: 3.9.7
 

@@ -46,5 +46,5 @@ DEBIAN_PACKAGE-dkms (MODULE_VERSION) stable; urgency=low
     - Implemented canGetBusStatistics for reading the busload value.
     - BusStatistics now separates correctly on standard and extended id frames.
 
- -- Joshua Whitley <jwhitley@autonomoustuff.com>  DATE_STAMP
+ -- AutonomouStuff <software@autonomoustuff.com>  DATE_STAMP
 

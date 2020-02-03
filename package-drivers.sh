@@ -150,7 +150,7 @@ cd ../..
 # Upload
 echo ""
 echo "Uploading..."
-dput ppa:jwhitleyastuff/kvaser-linux kvaser-drivers-dkms_${DEBIAN_VERSION}_source.changes
+dput ppa:astuff/kvaser-linux kvaser-drivers-dkms_${DEBIAN_VERSION}_source.changes
 echo "Done!"
 
 exit

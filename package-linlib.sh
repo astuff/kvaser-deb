@@ -82,5 +82,5 @@ cd ..
 # Upload
 echo ""
 echo "Uploading..."
-dput ppa:jwhitleyastuff/kvaser-linux kvaser-linlib-dev_${DEBIAN_VERSION}_source.changes
+dput ppa:astuff/kvaser-linux kvaser-linlib-dev_${DEBIAN_VERSION}_source.changes
 echo "Done!"

@@ -36,4 +36,4 @@ kvaser-canlib-dev (MODULE_VERSION) unstable; urgency=medium
     - Added API functions kvmLogFileMountEx and kvmKmeCountEventsEx,
       handling the situation where the number of events exceeds the size of an int.
 
- -- Joshua Whitley <jwhitley@autonomoustuff.com>  DATE_STAMP
+ -- AutonomouStuff <software@autonomoustuff.com>  DATE_STAMP
