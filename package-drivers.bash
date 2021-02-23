@@ -47,8 +47,8 @@ git clone --branch "$SDK_COMMIT" https://github.com/astuff/kvaser-linuxcan linux
 VERSION=$(cat linuxcan/moduleinfo.txt | grep version | sed -e "s/version=//" -e "s/_/./g" -e "s/\r//g")
 DEBIAN_VERSION=${VERSION}-0ubuntu0~ppa
 
-if [ $# -gt 0 ]; then
-  DEBIAN_VERSION=${DEBIAN_VERSION}$1
+if [ -n "$VER_SUFFIX" ]; then
+  DEBIAN_VERSION=${DEBIAN_VERSION}$VER_SUFFIX
 else
   DEBIAN_VERSION=${DEBIAN_VERSION}0
 fi

@@ -18,15 +18,15 @@ bash install_dependencies.bash
 ```
 1. Release kvaser-canlib-dev:
 ```
-bash package-canlib.bash
+bash package-canlib.bash [optional version tag/commit] [optional version suffix]
 ```
 1. Release kvaser-linlib-dev:
 ```
-bash package-linlib.bash
+bash package-linlib.bash [optional version tag/commit] [optional version suffix]
 ```
 1. Release kvaser-drivers-dkms:
 ```
-bash package-drivers.bash
+bash package-drivers.bash [optional version tag/commit] [optional version suffix]
 ```
 
 The order of the above commands **does matter** as `linlib` depends on `canlib`.
