@@ -35,7 +35,7 @@ mkdir BUILD
 cd BUILD/
 
 # Clone linuxcan folder
-git clone --branch "$SDK_COMMIT" https://github.com/astuff/kvaser-linuxcan
+git clone --depth=1 --branch "$SDK_COMMIT" https://github.com/astuff/kvaser-linuxcan
 
 mv kvaser-linuxcan/ kvaser-linlib/
 

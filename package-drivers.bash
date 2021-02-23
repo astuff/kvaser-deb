@@ -41,7 +41,7 @@ mkdir BUILD
 cd BUILD/
 
 # Clone linuxcan folder
-git clone --branch "$SDK_COMMIT" https://github.com/astuff/kvaser-linuxcan linuxcan
+git clone --depth=1 --branch "$SDK_COMMIT" https://github.com/astuff/kvaser-linuxcan linuxcan
 
 # Get version of linuxcan
 VERSION=$(cat linuxcan/moduleinfo.txt | grep version | sed -e "s/version=//" -e "s/_/./g" -e "s/\r//g")
