@@ -90,4 +90,12 @@ cd ..
 echo ""
 echo "Uploading..."
 dput ppa:astuff/kvaser-linux kvaser-canlib-dev_${DEBIAN_VERSION}_source.changes
-echo "Done!"
+echo "Upload complete"
+
+cd kvaser-canlib/
+echo ""
+echo "Building & installing locally for use with linlib ..."
+debuild --build=binary -sa
+
+cd ..
+dpkg -i kvaser-canlib-dev_${DEBIAN_VERSION}_*.deb
