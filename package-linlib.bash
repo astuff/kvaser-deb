@@ -1,39 +1,41 @@
 #!/bin/bash
-
-# Exit if any command fails
 set -e
 
-PWD=$(pwd)
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 OS_VER=$(lsb_release -cs)
+SDK_COMMIT="$1"
+VER_SUFFIX="$2"
+
+if [ -z "$SDK_COMMIT" ]; then
+  SDK_COMMIT=master
+fi
 
 echo ""
 echo "Remember to modify the changelog in linlib/debian-linlib to include the current release notes."
 echo "If you need to modify it now, hit [CTRL+C]. Otherwise hit [ENTER] to continue."
 read STUFF
 
+cd "$SCRIPT_DIR"
+
 # Check for required files/folders
-if [ ! -e "$PWD/linlib/debian-linlib" ]; then
+if [ ! -e "linlib/debian-linlib" ]; then
   echo ""
   echo "debian-linlib directory not found in linlib folder. Exiting..." 1>&2
   exit -1
 fi
 
-if [ ! -e "$PWD/linlib/Makefile-linlib" ]; then
+if [ ! -e "linlib/Makefile-linlib" ]; then
   echo ""
   echo "Makefile-linlib not found in linlib folder. Exiting..." 1>&2
   exit -1
 fi
 
-# Delete BUILD directory if it exists
-if [ -d "$PWD/BUILD" ]; then
-  rm -r BUILD/
-fi
-
+rm -rf BUILD/
 mkdir BUILD
 cd BUILD/
 
 # Clone linuxcan folder
-git clone https://github.com/astuff/kvaser-linuxcan
+git clone --branch "$SDK_COMMIT" https://github.com/astuff/kvaser-linuxcan
 
 mv kvaser-linuxcan/ kvaser-linlib/
 
@@ -50,7 +52,7 @@ fi
 # Strip down to only linlib
 cd kvaser-linlib/
 rm 10-kvaser.rules
-rm -r canlib/ leaf/ mhydra/ pcican/ pcican2/ pciefd/ usbcanII/ virtualcan/ 
+rm -r canlib/ leaf/ mhydra/ pcican/ pcican2/ pciefd/ usbcanII/ virtualcan/
 cp ../../linlib/Makefile-linlib Makefile
 
 # Modify Makefiles for DEB install
