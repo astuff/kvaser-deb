@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPT_DIR="$(dirname "$(realpath -s "$0")")"
 OS_VER=$(lsb_release -cs)
 SDK_COMMIT="$1"
 VER_SUFFIX="$2"
