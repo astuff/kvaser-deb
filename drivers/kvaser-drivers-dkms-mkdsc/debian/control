@@ -8,6 +8,6 @@ Standards-Version: 4.1.2
 Homepage: https://www.kvaser.com/linux-drivers-and-sdk/
 
 Package: DEBIAN_PACKAGE-dkms
-Architecture: amd64
+Architecture: any
 Depends: dkms (>= 1.95), ${misc:Depends}
 Description: DEBIAN_PACKAGE in DKMS format.
