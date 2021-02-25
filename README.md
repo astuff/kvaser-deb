@@ -2,20 +2,34 @@
 
 ## Usage
 
-- Download the Linuxcan (Kvaser Linux) Drivers and SDK from https://kvaser.com/download/
-- Place the `linuxcan.tar.gz` file in the root of this repo
-- For uploading to PPA astuff/kvaser-linux (separate packages for `canlib`, `linlib`, and `drivers`):
-  - `$ ./package-canlib.sh`
-  - `$ ./package-linlib.sh`
-  - `$ ./package-drivers.sh`
+The scripts in this repo are meant to be used inside a docker container.
+Before releasing new versions of anything, update the following changelogs:
+- canlib/debian-canlib/changelog
+- linlib/debian-linlib/changelog
+- drivers/kvaser-drivers-dkms-mkdsc
+
+The information for the changelog updates can be found in the [kvaser-linuxcan](https://github.com/astuff/kvaser-linuxcan) source under `doc/ReleaseNotes`.
+
+Once the changelogs are updated, you are ready to perform the release:
+
+1. After starting a container of your choosing, first install all required dependencies:
+```
+bash install_dependencies.bash
+```
+1. Release kvaser-canlib-dev:
+```
+bash package-canlib.bash [optional version tag/commit] [optional version suffix]
+```
+1. Release kvaser-linlib-dev:
+```
+bash package-linlib.bash [optional version tag/commit] [optional version suffix]
+```
+1. Release kvaser-drivers-dkms:
+```
+bash package-drivers.bash [optional version tag/commit] [optional version suffix]
+```
 
 The order of the above commands **does matter** as `linlib` depends on `canlib`.
-
-## Prerequisites
-
-- `sed`
-- `dkms`
-- Kernel headers (`linux-headers-generic` on Ubuntu)
 
 ## Installation of the generated packages
 

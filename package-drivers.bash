@@ -1,52 +1,54 @@
 #!/bin/bash
-
-PWD=$(pwd)
-
-# Exit if any command fails
 set -e
+
+SCRIPT_DIR="$(dirname "$(realpath -s "$0")")"
+OS_VER=$(lsb_release -cs)
+SDK_COMMIT="$1"
+VER_SUFFIX="$2"
+
+if [ -z "$SDK_COMMIT" ]; then
+  SDK_COMMIT=master
+fi
 
 echo ""
 echo "Remember to modify the changelog in drivers/kvaser-drivers-dkms-mkdsc/debian to include the current release notes."
 echo "If you need to modify it now, hit CTRL+C. Otherwise hit enter to continue."
 read STUFF
 
+cd "$SCRIPT_DIR"
+
 # Check for required files/folders
-if [ ! -e "$PWD/drivers/dkms.conf" ]; then
+if [ ! -e "drivers/dkms.conf" ]; then
   echo ""
   echo "dkms.conf not found in drivers directory. Exiting..." 1>&2
   exit -1
 fi
 
-if [ ! -e "$PWD/drivers/mod-installscript.sh" ]; then
+if [ ! -e "drivers/mod-installscript.sh" ]; then
   echo ""
   echo "mod-installscript.sh not found in drivers directory. Exiting..." 1>&2
   exit -1
 fi
 
-if [ ! -e "$PWD/drivers/kvaser-drivers-dkms-mkdsc" ]; then
+if [ ! -e "drivers/kvaser-drivers-dkms-mkdsc" ]; then
   echo ""
   echo "kvaser-drivers-dkms-mkdsc directory not found in drivers directory. Exiting..." 1>&2
   exit -1
 fi
 
-# Delete the BUILD/ directory if it exists
-# Delete existing directories if they exist
-if [ -d "$PWD/BUILD" ]; then
-  rm -r BUILD/
-fi
-
+rm -rf BUILD/
 mkdir BUILD
 cd BUILD/
 
 # Clone linuxcan folder
-git clone https://github.com/astuff/kvaser-linuxcan linuxcan
+git clone --depth=1 --branch "$SDK_COMMIT" https://github.com/astuff/kvaser-linuxcan linuxcan
 
 # Get version of linuxcan
 VERSION=$(cat linuxcan/moduleinfo.txt | grep version | sed -e "s/version=//" -e "s/_/./g" -e "s/\r//g")
 DEBIAN_VERSION=${VERSION}-0ubuntu0~ppa
 
-if [ $# -gt 0 ]; then
-  DEBIAN_VERSION=${DEBIAN_VERSION}$1
+if [ -n "$VER_SUFFIX" ]; then
+  DEBIAN_VERSION=${DEBIAN_VERSION}$VER_SUFFIX
 else
   DEBIAN_VERSION=${DEBIAN_VERSION}0
 fi
@@ -56,13 +58,13 @@ INSTALL_DIR=/usr/src/kvaser-drivers-$VERSION
 
 # Delete version-specific folders
 if [ -d "/usr/src/kvaser-drivers-${VERSION}" ]; then
-  sudo rm -r /usr/src/kvaser-drivers-${VERSION}
+  rm -r /usr/src/kvaser-drivers-${VERSION}
   echo ""
   echo "kvaser-drivers-${VERSION} directory deleted"
 fi
 
 if [ -d "/var/lib/dkms/kvaser-drivers/${VERSION}" ]; then
-  sudo rm -r /var/lib/dkms/kvaser-drivers/${VERSION}
+  rm -r /var/lib/dkms/kvaser-drivers/${VERSION}
   echo ""
   echo "kvaser-drivers/${VERSION} dkms directory deleted"
 fi
@@ -93,7 +95,7 @@ for d in */; do
     cd $d
 
     # Create new install scripts that don't install the modules directly
-    sudo cat installscript.sh | sed -e "/install -D -m 644 \$MODNAME.ko \/lib\/modules\/\`uname -r\`\/kernel\/drivers\/usb\/misc\/\$MODNAME.ko/,+3d" -e "/install -D -m 644 \$MODNAME.ko \/lib\/modules\/\`uname -r\`\/kernel\/drivers\/usb\/misc/,+3d" -e "/install -m 644 \$MODNAME.ko \/lib\/modules\/\`uname -r\`\/kernel\/drivers\/char\//,+3d" > mod-installscript.sh
+    cat installscript.sh | sed -e "/install -D -m 644 \$MODNAME.ko \/lib\/modules\/\`uname -r\`\/kernel\/drivers\/usb\/misc\/\$MODNAME.ko/,+3d" -e "/install -D -m 644 \$MODNAME.ko \/lib\/modules\/\`uname -r\`\/kernel\/drivers\/usb\/misc/,+3d" -e "/install -m 644 \$MODNAME.ko \/lib\/modules\/\`uname -r\`\/kernel\/drivers\/char\//,+3d" > mod-installscript.sh
     chmod +x mod-installscript.sh
 
     if [ -e "Makefile" ] ; then
@@ -116,14 +118,14 @@ echo ""
 echo "Moving linuxcan folder to $INSTALL_DIR..."
 
 # Rename source folder to what DKMS expects
-sudo mv linuxcan $INSTALL_DIR
+mv linuxcan $INSTALL_DIR
 
 # Do the thing
 echo ""
 echo "Building DKMS source module..."
 echo ""
-sudo dkms add kvaser-drivers/$VERSION
-sudo dkms mkdsc kvaser-drivers/$VERSION --source-only
+dkms add kvaser-drivers/$VERSION
+dkms mkdsc kvaser-drivers/$VERSION --source-only
 
 # Proper DKMS Package Instructions: http://chrisarges.net/2013/09/05/building-proper-debian-source-package.html
 mkdir dsc
@@ -152,5 +154,3 @@ echo ""
 echo "Uploading..."
 dput ppa:astuff/kvaser-linux kvaser-drivers-dkms_${DEBIAN_VERSION}_source.changes
 echo "Done!"
-
-exit
