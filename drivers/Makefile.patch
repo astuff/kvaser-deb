@@ -41,7 +41,7 @@
  common:
  	@cd ./common; $(MAKE) kv_module
  
-@@ -149,23 +140,16 @@ pciefd: common
+@@ -149,30 +140,21 @@ pciefd: common
  
  install:
  	@for dir in $(DRIVERS) ; do cd $$dir; echo Installing $$dir;./installscript.sh || exit 1; cd ..; done
@@ -50,6 +50,13 @@
  
  uninstall:
  	@for dir in $(call reverse,$(DRIVERS)) ; do cd $$dir; echo Uninstalling $$dir;./uninstallscript.sh || exit 1; cd ..; done
+-	$(MAKE) -C canlib uninstall
+-	$(MAKE) -C linlib uninstall
+ 	rm -f /etc/udev/rules.d/10-kvaser.rules
+ 	rm -f /etc/modules-load.d/kvaser.conf
+ 
+ purge:
+ 	@for dir in $(call reverse,$(DRIVERS)) ; do cd $$dir; echo Uninstalling $$dir;./uninstallscript.sh -p || exit 1; cd ..; done
 -	$(MAKE) -C canlib uninstall
 -	$(MAKE) -C linlib uninstall
  	rm -f /etc/udev/rules.d/10-kvaser.rules
