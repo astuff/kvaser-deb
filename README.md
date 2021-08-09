@@ -13,21 +13,27 @@ The information for the changelog updates can be found in the [kvaser-linuxcan](
 Once the changelogs are updated, you are ready to perform the release:
 
 1. After starting a container of your choosing, first install all required dependencies:
-```
-bash install_dependencies.bash
-```
+
+        bash install_dependencies.bash
+
 1. Release kvaser-canlib-dev:
-```
-bash package-canlib.bash [optional version tag/commit] [optional version suffix]
-```
+
+        bash package-canlib.bash [optional version tag/commit] [optional version suffix] [optional 'upload' flag]
+        example:
+        bash package-canlib.bash 5.35.477 1 upload
+
 1. Release kvaser-linlib-dev:
-```
-bash package-linlib.bash [optional version tag/commit] [optional version suffix]
-```
+
+        bash package-linlib.bash [optional version tag/commit] [optional version suffix] [optional 'upload' flag]
+        example:
+        bash package-linlib.bash 5.35.477 1 upload
+
 1. Release kvaser-drivers-dkms:
-```
-bash package-drivers.bash [optional version tag/commit] [optional version suffix]
-```
+
+        bash package-drivers.bash [optional version tag/commit] [optional version suffix] [optional 'upload' flag]
+        example:
+        bash package-drivers.bash 5.35.477 1 upload
+
 
 The order of the above commands **does matter** as `linlib` depends on `canlib`.
 

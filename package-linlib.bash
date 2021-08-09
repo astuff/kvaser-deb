@@ -5,6 +5,7 @@ SCRIPT_DIR="$(dirname "$(realpath -s "$0")")"
 OS_VER=$(lsb_release -cs)
 SDK_COMMIT="$1"
 VER_SUFFIX="$2"
+UPLOAD="$3"
 
 if [ -z "$SDK_COMMIT" ]; then
   SDK_COMMIT=master
@@ -83,6 +84,17 @@ cd ..
 
 # Upload
 echo ""
-echo "Uploading..."
-dput ppa:astuff/kvaser-linux kvaser-linlib-dev_${DEBIAN_VERSION}_source.changes
-echo "Done!"
+if [ "$UPLOAD" == "upload" ]; then
+  echo "Uploading..."
+  dput ppa:astuff/kvaser-linux kvaser-linlib-dev_${DEBIAN_VERSION}_source.changes
+  echo "Done!"
+else
+  echo "Upload skipped"
+fi
+
+cd kvaser-linlib/
+echo ""
+echo "Building debs locally for testing purposes ..."
+debuild --build=binary -sa
+
+echo "Done"
