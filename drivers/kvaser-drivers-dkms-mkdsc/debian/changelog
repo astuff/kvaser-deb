@@ -1,4 +1,4 @@
-kvaser-drivers-dkms (5.36.575-0ubuntu0~ppa0) focal; urgency=low
+kvaser-drivers-dkms (MODULE_VERSION) stable; urgency=low
 
   * Fixed false positive warning when building with Secure Boot disabled
     (introduced in v5.27).
@@ -11,4 +11,4 @@ kvaser-drivers-dkms (5.36.575-0ubuntu0~ppa0) focal; urgency=low
     several times for different linux header versions. This option is invoked
     through "sudo make purge".
 
- -- AutonomouStuff <software@autonomoustuff.com>  Tue, 10 Aug 2021 06:43:50 -0800
+ -- AutonomouStuff <software@autonomoustuff.com>  DATE_STAMP
