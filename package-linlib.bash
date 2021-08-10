@@ -53,7 +53,7 @@ fi
 # Strip down to only linlib
 cd kvaser-linlib/
 rm 10-kvaser.rules
-rm -r canlib/ leaf/ mhydra/ pcican/ pcican2/ pciefd/ usbcanII/ virtualcan/
+rm -r canlib/ leaf/ mhydra/ pcican/ pcican2/ pciefd/ usbcanII/ virtualcan/ dkms/
 cp ../../linlib/Makefile-linlib Makefile
 
 # Modify Makefiles for DEB install
