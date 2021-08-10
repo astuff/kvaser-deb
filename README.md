@@ -42,3 +42,7 @@ The order of the above commands **does matter** as `linlib` depends on `canlib`.
 - `astuff/kvaser-linux`:
   - `$ sudo apt-add-repository ppa:astuff/kvaser-linux`
   - `$ sudo apt install kvaser-canlib-dev kvaser-linlib-dev kvaser-drivers-dkms`
+
+## Related Documentation
+
+https://www.debian.org/doc/manuals/maint-guide/dother.en.html

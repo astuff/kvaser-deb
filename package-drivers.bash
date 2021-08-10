@@ -19,17 +19,17 @@ read STUFF
 cd "$SCRIPT_DIR"
 
 # Check for required files/folders
-if [ ! -e "drivers/dkms.conf" ]; then
-  echo ""
-  echo "dkms.conf not found in drivers directory. Exiting..." 1>&2
-  exit -1
-fi
+# if [ ! -e "drivers/dkms.conf" ]; then
+#   echo ""
+#   echo "dkms.conf not found in drivers directory. Exiting..." 1>&2
+#   exit -1
+# fi
 
-if [ ! -e "drivers/mod-installscript.sh" ]; then
-  echo ""
-  echo "mod-installscript.sh not found in drivers directory. Exiting..." 1>&2
-  exit -1
-fi
+# if [ ! -e "drivers/installscript.sh" ]; then
+#   echo ""
+#   echo "installscript.sh not found in drivers directory. Exiting..." 1>&2
+#   exit -1
+# fi
 
 if [ ! -e "drivers/kvaser-drivers-dkms-mkdsc" ]; then
   echo ""
@@ -73,78 +73,116 @@ fi
 # Copy necessary files
 echo ""
 echo "Copying files..."
-cp ../drivers/dkms.conf linuxcan/
-cp ../drivers/mod-installscript.sh linuxcan/
+# cp ../drivers/dkms.conf linuxcan/
+# cp ../drivers/installscript.sh linuxcan/
 
 # Modify dkms.conf with correct version
-sed -i "s/PACKAGE_VERSION=\"\"/PACKAGE_VERSION=\"$VERSION\"/" linuxcan/dkms.conf
+# sed -i "s/PACKAGE_VERSION=\"\"/PACKAGE_VERSION=\"$VERSION\"/" linuxcan/dkms.conf
+# sed -i "s/PACKAGE_VERSION=\"\"/PACKAGE_VERSION=\"$VERSION\"/" linuxcan/dkms/dkms.conf
+sed -i "s/PACKAGE_VERSION=.*/PACKAGE_VERSION=\"$VERSION\"/" linuxcan/dkms/dkms.conf
+# Use our package name instead
+# sed -i "s/PACKAGE_NAME=/PACKAGE_NAME=\"kvaser-drivers\"/" linuxcan/dkms/dkms.conf
+sed -i 's/PACKAGE_NAME=.*/PACKAGE_NAME="kvaser-drivers"/' linuxcan/dkms/dkms.conf
 
-echo ""
-echo "Editing install scripts and Makefiles to make compatible with module install..."
-cd linuxcan/
+# echo ""
+# echo "Editing install scripts and Makefiles to make compatible with module install..."
+# cd linuxcan/
 
 # Remove canlib/linlib
-rm -r canlib/ doc/ linlib/
-rm include/canlib.h include/linlib.h include/obsolete.h
+# rm -r canlib/ doc/ linlib/
+# rm include/canlib.h include/linlib.h include/obsolete.h
 
 # Patch Makefile to not build canlib/linlib
-patch < ../../drivers/Makefile.patch
+# patch < ../../drivers/Makefile.patch
 
 # Modify installation scripts and makefiles
-for d in */; do
-  if [ -e "$d/installscript.sh" ] ; then
-    cd $d
+# for d in */; do
+#   if [ -e "$d/installscript.sh" ] ; then
+#     cd $d
 
-    # Create new install scripts that don't install the modules directly
-    cat installscript.sh | sed -e "/install -D -m 644 \$MODNAME.ko \/lib\/modules\/\`uname -r\`\/kernel\/drivers\/usb\/misc\/\$MODNAME.ko/,+3d" -e "/install -D -m 644 \$MODNAME.ko \/lib\/modules\/\`uname -r\`\/kernel\/drivers\/usb\/misc/,+3d" -e "/install -m 644 \$MODNAME.ko \/lib\/modules\/\`uname -r\`\/kernel\/drivers\/char\//,+3d" > mod-installscript.sh
-    chmod +x mod-installscript.sh
+#     # Create new install scripts that don't install the modules directly
+#     cat installscript.sh | sed -e "/install -D -m 644 \$MODNAME.ko \/lib\/modules\/\`uname -r\`\/kernel\/drivers\/usb\/misc\/\$MODNAME.ko/,+3d" -e "/install -D -m 644 \$MODNAME.ko \/lib\/modules\/\`uname -r\`\/kernel\/drivers\/usb\/misc/,+3d" -e "/install -m 644 \$MODNAME.ko \/lib\/modules\/\`uname -r\`\/kernel\/drivers\/char\//,+3d" > mod-installscript.sh
+#     chmod +x mod-installscript.sh
 
-    if [ -e "Makefile" ] ; then
-      # Fix bug that keeps modules from building with KERNELRELEASE argument
-      sed -i '/^ifneq (\$(KERNELRELEASE),)$/ {N;N;N;N;s/ifneq (\$(KERNELRELEASE),)\n\tRUNDIR := \$(src)\nelse\n\tRUNDIR := \$(PWD)\nendif/RUNDIR := \$(PWD)/}' Makefile
-    fi
+#     if [ -e "Makefile" ] ; then
+#       # Fix bug that keeps modules from building with KERNELRELEASE argument
+#       sed -i '/^ifneq (\$(KERNELRELEASE),)$/ {N;N;N;N;s/ifneq (\$(KERNELRELEASE),)\n\tRUNDIR := \$(src)\nelse\n\tRUNDIR := \$(PWD)\nendif/RUNDIR := \$(PWD)/}' Makefile
+#     fi
 
-    cd ..
-  fi
-done
+#     cd ..
+#   fi
+# done
 
-cp -r ../../drivers/kvaser-drivers-dkms-mkdsc .
 
 # Modify debian/changelog with correct OS and package versions
-sed -i "s/stable/${OS_VER}/" kvaser-drivers-dkms-mkdsc/debian/changelog
+# sed -i "s/stable/${OS_VER}/" kvaser-drivers-dkms-mkdsc/debian/changelog
+sed -i "s/stable/${OS_VER}/" "$SCRIPT_DIR/drivers/kvaser-drivers-dkms-mkdsc/debian/changelog"
 
-cd ..
+echo "files updated"
 
-echo ""
-echo "Moving linuxcan folder to $INSTALL_DIR..."
+
+cp -r "$SCRIPT_DIR/drivers/kvaser-drivers-dkms-mkdsc" linuxcan/
+
+
+cd linuxcan/
+
+# cd ..
+
+# echo ""
+# echo "Moving linuxcan folder to $INSTALL_DIR..."
 
 # Rename source folder to what DKMS expects
-mv linuxcan $INSTALL_DIR
+# mv linuxcan $INSTALL_DIR
 
-# Do the thing
-echo ""
-echo "Building DKMS source module..."
-echo ""
-dkms add kvaser-drivers/$VERSION
+#
+# echo ""
+# echo "Building DKMS source module..."
+# echo ""
+
+# # Add the kvaser-drivers/version module to the module tree
+# dkms add kvaser-drivers/$VERSION
+
+cp -r "$SCRIPT_DIR/drivers/kvaser-drivers-dkms-mkdsc" /usr/src/kvaser-drivers-$VERSION
+
+# Install dkms module using kvaser's instructions
+make dkms
+KV_DKMS_TARBALL=kvaser-drivers-$VERSION-source-only.dkms.tar.gz
+# make dkms_install
+echo "ADDING $KV_DKMS_TARBALL"
+dkms add "$KV_DKMS_TARBALL"
+# dkms install kvaser-drivers/$VERSION
+dkms status
+
+
+
+cp -r "$SCRIPT_DIR/drivers/kvaser-drivers-dkms-mkdsc" /usr/src/kvaser-drivers-$VERSION
 dkms mkdsc kvaser-drivers/$VERSION --source-only
 
-# Proper DKMS Package Instructions: http://chrisarges.net/2013/09/05/building-proper-debian-source-package.html
+# # # Proper DKMS Package Instructions: http://chrisarges.net/2013/09/05/building-proper-debian-source-package.html
 mkdir dsc
 cp -R /var/lib/dkms/kvaser-drivers/$VERSION/dsc/* dsc/
 cd dsc
 
-# Unpack the dsc
+# # # Unpack the dsc
 dpkg-source -x kvaser-drivers-dkms_$VERSION.dsc
 cd kvaser-drivers-dkms-${VERSION}
 
-# Fix permissions
+# # # Fix permissions
 chmod -x debian/co* debian/dirs debian/ch*
+
+
+# echo "Done for now"
+# exit 0
+
 
 # Edit the package version
 echo ""
 echo "Editing auto-generated package..."
 sed -i "s/$VERSION/$DEBIAN_VERSION/g" debian/changelog
 echo 9 > debian/compat
+
+##### TODO!! make sure extra junk isn't being added to the dsc file, like the kvaser-drivers-dkms-mkdsc folder
+
 
 cd kvaser-drivers-${VERSION}
 debuild -S

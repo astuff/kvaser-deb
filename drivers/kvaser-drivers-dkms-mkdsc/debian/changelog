@@ -1,14 +1,14 @@
-DEBIAN_PACKAGE-dkms (MODULE_VERSION) stable; urgency=low
+kvaser-drivers-dkms (5.36.575-0ubuntu0~ppa0) focal; urgency=low
 
-  * Common
-    - fixed bug where a call to canIOCTL_TX_INTERVAL could cause a crash if 
-      TX_INTERVAL is unsupported by the device.
-    - BusStatistics increments between calls to canGetBusStatistics. Previously,
-      it was cleared. The function now has the same behavior as in Windows.
+  * Fixed false positive warning when building with Secure Boot disabled
+    (introduced in v5.27).
 
-  * PCIEcan
-    - Implemented canGetBusStatistics for reading the busload value.
-    - BusStatistics now separates correctly on standard and extended id frames.
+  * Updated linuxcan install procedure to record for which linux header version
+    it was installed in order to be able to uninstall even after linux header
+    version upgrade.
 
- -- AutonomouStuff <software@autonomoustuff.com>  DATE_STAMP
+  * Added option to uninstall all versions of linuxcan if it has been installed
+    several times for different linux header versions. This option is invoked
+    through "sudo make purge".
 
+ -- AutonomouStuff <software@autonomoustuff.com>  Tue, 10 Aug 2021 06:43:50 -0800
