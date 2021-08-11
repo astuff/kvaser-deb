@@ -1,14 +1,10 @@
 kvaser-drivers-dkms (MODULE_VERSION) stable; urgency=low
 
-  * Fixed false positive warning when building with Secure Boot disabled
-    (introduced in v5.27).
+  * Added support for new devices:
+    - Kvaser Hybrid CAN/LIN (01284-4)
+    - Kvaser Hybrid Pro CAN/LIN (01288-2)
 
-  * Updated linuxcan install procedure to record for which linux header version
-    it was installed in order to be able to uninstall even after linux header
-    version upgrade.
-
-  * Added option to uninstall all versions of linuxcan if it has been installed
-    several times for different linux header versions. This option is invoked
-    through "sudo make purge".
+  * Added firmware upgrade utility, kv_flash_prog and kv_flash_prog_mmap.
+    This utility is currently only supported for devices using the pciefd driver.
 
  -- AutonomouStuff <software@autonomoustuff.com>  DATE_STAMP

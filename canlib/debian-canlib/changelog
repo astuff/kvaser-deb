@@ -1,26 +1,20 @@
 kvaser-canlib-dev (MODULE_VERSION) unstable; urgency=medium
 
-  * SDK (canlib)
-    - New bus parameter API using time quanta, see e.g. canSetBusParamsTq().
-    - kvScriptEnvvarOpen()'s 'envvarName' parameter and kvScriptEnvvarSetData()'s
-      'buf' parameter have been changed to const.
-    - Added a filter on event canNOTIFY_STATUS. The event is now only generated
-      when status is changed.
-    - Source code are no longer installed together with the CANlib examples.
-
-  * SDK (kvmlib)
-    - KME24 RTC events retrieved via kvmKmeReadEvent will no longer have
-      cached timeStamp values.
-
   * SDK (kvadblib)
-    - Added functions kvaDbGetMsgByPGNEx and kvaDbGetMsgByIdEx which differ
-      from their predecessors in that KVADB_MESSAGE_EXT is no longer set on
-      the id parameter. For kvaDbGetMsgByIdEx it is instead set on a flags
-      parameter.
-    - Fixed a bug on kvaDbGetMsgById which allowed ext messages to be found
-      when searching for std messages.
-    - kvaDbGetMsgByPGN was deprecated in favour of kvaDbGetMsgByPGNEx.
-    - kvaDbGetMsgByPGNEx (and kvaDbGetMsgByPGN) will not return the message
-      'VECTOR_INDEPENDENT_SIG_MSG'.
+    - Reverted the deprecation status of kvaDbGetMsgByPGN
+    - Updated kvaDbGetMsgByPGN/kvaDbGetMsgByPGNEx to account for data page (dp), /
+      extended data page (edp) and to work with old j1939 databases.
+  * SDK (kvlclib)
+    - Improved filtering of j1939 PGN when using KVLC_FILE_FORMAT_CSV_SIGNAL,
+      KVLC_FILE_FORMAT_MDF_SIGNAL and KVLC_FILE_FORMAT_MDF_4X_SIGNAL.
+  * SDK (kvaMemoLibXML)
+    - Fixed a bug where j1939 triggers failed to trigger.
+  * SDK  (canlib)
+    - Fixed a bug where CanGetBusParamsTq() failed after call to busOn().
+    - Modified canFD_BITRATE_xxx constant for improved stability.
+    - Added bitrate constant canFD_BITRATE_8M_70P.
+  * Added support for new devices:
+    - Kvaser Hybrid CAN/LIN (01284-4)
+    - Kvaser Hybrid Pro CAN/LIN (01288-2)
 
  -- AutonomouStuff <software@autonomoustuff.com>  DATE_STAMP

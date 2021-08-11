@@ -74,14 +74,17 @@ main()
   dpkg-source -x kvaser-drivers-dkms_$VERSION.dsc
   cd kvaser-drivers-dkms-${VERSION}
 
+  echo ""
+  echo "Editing auto-generated package..."
+
   # Fix permissions
   chmod -x debian/co* debian/dirs debian/ch*
 
   # Edit the package version
-  echo ""
-  echo "Editing auto-generated package..."
   sed -i "s/$VERSION/$DEBIAN_VERSION/g" debian/changelog
   echo 9 > debian/compat
+
+  rm -rf kvaser-drivers-${VERSION}/kvaser-drivers-dkms-mkdsc
 
   cd kvaser-drivers-${VERSION}
   debuild -S

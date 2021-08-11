@@ -1,5 +1,10 @@
 kvaser-linlib-dev (MODULE_VERSION) unstable; urgency=medium
 
-  * No changes
+  * Added support for new devices:
+    - Kvaser Hybrid CAN/LIN (01284-4)
+    - Kvaser Hybrid Pro CAN/LIN (01288-2)
+
+  * Added firmware upgrade utility, kv_flash_prog and kv_flash_prog_mmap.
+    This utility is currently only supported for devices using the pciefd driver.
 
  -- AutonomouStuff <software@autonomoustuff.com>  DATE_STAMP

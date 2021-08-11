@@ -45,4 +45,9 @@ The order of the above commands **does matter** as `linlib` depends on `canlib`.
 
 ## Related Documentation
 
+Debian package files:
+https://www.debian.org/doc/manuals/maint-guide/dreq.en.html
 https://www.debian.org/doc/manuals/maint-guide/dother.en.html
+
+Ubuntu Launchpad packaging details:
+https://help.launchpad.net/Packaging/PPA/BuildingASourcePackage
