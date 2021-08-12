@@ -1,14 +1,10 @@
-DEBIAN_PACKAGE-dkms (MODULE_VERSION) stable; urgency=low
+kvaser-drivers-dkms (MODULE_VERSION) stable; urgency=low
 
-  * Common
-    - fixed bug where a call to canIOCTL_TX_INTERVAL could cause a crash if 
-      TX_INTERVAL is unsupported by the device.
-    - BusStatistics increments between calls to canGetBusStatistics. Previously,
-      it was cleared. The function now has the same behavior as in Windows.
+  * Added support for new devices:
+    - Kvaser Hybrid CAN/LIN (01284-4)
+    - Kvaser Hybrid Pro CAN/LIN (01288-2)
 
-  * PCIEcan
-    - Implemented canGetBusStatistics for reading the busload value.
-    - BusStatistics now separates correctly on standard and extended id frames.
+  * Added firmware upgrade utility, kv_flash_prog and kv_flash_prog_mmap.
+    This utility is currently only supported for devices using the pciefd driver.
 
  -- AutonomouStuff <software@autonomoustuff.com>  DATE_STAMP
-

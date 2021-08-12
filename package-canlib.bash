@@ -5,6 +5,7 @@ SCRIPT_DIR="$(dirname "$(realpath -s "$0")")"
 OS_VER=$(lsb_release -cs)
 SDK_COMMIT="$1"
 VER_SUFFIX="$2"
+UPLOAD="$3"
 
 if [ -z "$SDK_COMMIT" ]; then
   SDK_COMMIT=master
@@ -52,7 +53,7 @@ fi
 # Strip down to only canlib
 cd kvaser-canlib/
 rm 10-kvaser.rules
-rm -r leaf/ linlib/ mhydra/ pcican/ pcican2/ pciefd/ usbcanII/ virtualcan/
+rm -r leaf/ linlib/ mhydra/ pcican/ pcican2/ pciefd/ usbcanII/ virtualcan/ dkms/
 cp ../../canlib/Makefile-canlib Makefile
 
 # Modify Makefiles for DEB install
@@ -88,9 +89,13 @@ cd ..
 
 # Upload
 echo ""
-echo "Uploading..."
-dput ppa:astuff/kvaser-linux kvaser-canlib-dev_${DEBIAN_VERSION}_source.changes
-echo "Upload complete"
+if [ "$UPLOAD" == "upload" ]; then
+  echo "Uploading..."
+  dput ppa:astuff/kvaser-linux kvaser-canlib-dev_${DEBIAN_VERSION}_source.changes
+  echo "Upload complete"
+else
+  echo "Upload skipped"
+fi
 
 cd kvaser-canlib/
 echo ""
@@ -99,3 +104,5 @@ debuild --build=binary -sa
 
 cd ..
 dpkg -i kvaser-canlib-dev_${DEBIAN_VERSION}_*.deb
+
+echo "Done"

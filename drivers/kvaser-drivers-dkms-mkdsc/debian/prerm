@@ -8,7 +8,7 @@ set -e
 case "$1" in
     remove|upgrade|deconfigure)
       if [  "`dkms status -m $NAME`" ]; then
-         dkms remove -m $NAME -v $VERSION --all
+        dkms remove -m $NAME -v $VERSION --all
       fi
     ;;
 
@@ -16,8 +16,8 @@ case "$1" in
     ;;
 
     *)
-        echo "prerm called with unknown argument \`$1'" >&2
-        exit 1
+      echo "prerm called with unknown argument \`$1'" >&2
+      exit 1
     ;;
 esac
 
