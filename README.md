@@ -20,22 +20,26 @@ Once the changelogs are updated, you are ready to perform the release:
 
         bash package-canlib.bash [optional version tag/commit] [optional version suffix] [optional 'upload' flag]
         example:
-        bash package-canlib.bash 5.35.477 1 upload
+        bash package-canlib.bash 5.35.477 0 upload
 
 1. Release kvaser-linlib-dev:
 
         bash package-linlib.bash [optional version tag/commit] [optional version suffix] [optional 'upload' flag]
         example:
-        bash package-linlib.bash 5.35.477 1 upload
+        bash package-linlib.bash 5.35.477 0 upload
 
 1. Release kvaser-drivers-dkms:
 
         bash package-drivers.bash [optional version tag/commit] [optional version suffix] [optional 'upload' flag]
         example:
-        bash package-drivers.bash 5.35.477 1 upload
+        bash package-drivers.bash 5.35.477 0 upload
 
 
 The order of the above commands **does matter** as `linlib` depends on `canlib`.
+
+**NOTE:** dput seems flakey with ftp uploads.
+If the `dput` upload seems to stall, you may want to try running dput outside of the docker container from the `kvaser-deb/BUILD` directory.
+You may also consider configuring dput to use sftp instead of ftp.
 
 ## Installation of the generated packages
 
